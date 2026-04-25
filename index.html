@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>易經掌握之路 · I Ching Mastery</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700&family=Cinzel:wght@400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  /* ── Option A: Ink & Parchment ── */
+  --p:#F5EDD8;--p2:#EDE0C4;--p3:#E0CFA8;
+  --ink:#2C1810;--ink2:#5C3D1E;--ink3:#8B6914;
+  --red:#C0392B;--red2:#922B21;
+  --gold:#8B6914;--gold2:#C9A84C;
+  --jade:#1E6B3A;--jade2:#2D8A50;
+  --border:#C9A84C;--lock:#A09080;--sh:rgba(44,24,16,.15);
+  --wood:#3a7a2a;--fire:#c0391b;--earth:#9a7a1a;--metal:#5a7a9a;--water:#1a4a8a;
+}
+html,body{min-height:100%;background:var(--p);}
+body{font-family:'Noto Serif TC',serif;color:var(--ink);}
+.screen{display:none;}
+.screen.visible{display:block;}
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-bar{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:10px 16px;background:var(--p2);border-bottom:1px solid var(--border);}
+.lang-btn{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:transparent;font-family:'Noto Serif TC',serif;font-size:13px;cursor:pointer;color:var(--ink2);transition:all .2s;}
+.lang-btn.active{background:var(--ink);color:var(--p);border-color:var(--ink);}
+.lang-btn:hover:not(.active){border-color:var(--gold2);}
+
+/* ── SHARED BUTTONS ── */
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--ink3);font-family:'Noto Serif TC',serif;font-size:13px;cursor:pointer;padding:14px 14px 0;margin-bottom:0;}
+.back-btn:hover{color:var(--ink);}
+.btn-p{padding:10px 22px;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:'Noto Serif TC',serif;font-size:13px;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(192,57,43,.3);}
+.btn-p:hover{background:var(--red2);box-shadow:0 3px 10px rgba(192,57,43,.4);}
+.btn-s{padding:9px 18px;background:var(--p2);border:1px solid var(--border);border-radius:8px;font-family:'Noto Serif TC',serif;font-size:13px;cursor:pointer;color:var(--ink2);transition:all .2s;}
+.btn-s:hover{border-color:var(--gold2);color:var(--ink);background:var(--p);}
+.btn-gold{padding:10px 22px;background:var(--gold);color:#fff;border:none;border-radius:8px;font-family:'Noto Serif TC',serif;font-size:13px;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(139,105,20,.3);}
+.btn-gold:hover{opacity:.9;box-shadow:0 3px 10px rgba(139,105,20,.4);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.tag{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap;}
+.tag-pass{background:#c8e6c9;color:#1a5c2a;}
+.tag-open{background:#fce4e4;color:var(--red);}
+.tag-none{background:var(--p3);color:var(--lock);}
+.tag-final{background:#fef3c7;color:#7a5a00;}
+
+/* ── HERO / PATH ── */
+.path-hero{padding:16px 14px 14px;border-bottom:1px solid var(--border);background:var(--p2);}
+.hero-title{font-family:'Cinzel',serif;font-size:19px;font-weight:700;color:var(--red);letter-spacing:2px;margin-bottom:2px;}
+.hero-sub{font-size:11px;color:var(--ink3);margin-bottom:12px;line-height:1.5;}
+.prog-row{display:flex;align-items:center;gap:10px;}
+.prog-track{flex:1;height:6px;background:var(--p3);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--jade);border-radius:3px;transition:width .6s;}
+.prog-pct{font-size:12px;color:var(--jade);font-weight:700;min-width:36px;}
+.stage-list{padding:10px 12px 24px;}
+.group-lbl{font-size:10px;color:var(--lock);letter-spacing:1.5px;margin:16px 0 6px 2px;text-transform:uppercase;font-weight:700;}
+.srow{display:flex;gap:8px;margin-bottom:8px;align-items:stretch;}
+.snum{font-family:'Cinzel',serif;font-size:14px;color:var(--gold);min-width:22px;padding-top:14px;text-align:center;flex-shrink:0;}
+.scard{flex:1;border:1px solid var(--border);border-radius:12px;padding:13px 14px;background:var(--p2);cursor:pointer;transition:all .25s;min-width:0;box-shadow:0 1px 4px var(--sh);}
+.scard:hover{border-color:var(--gold2);box-shadow:0 4px 14px var(--sh);transform:translateY(-1px);}
+.scard.passed{background:#EEF7EE;border-color:#5a9a6a;}
+.scard.final-card{background:#FFFBEF;border-color:var(--gold);}
+.scard.final-card.passed{background:#EEF7EE;border-color:#5a9a6a;}
+.sc-head{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.sc-icon{font-size:18px;flex-shrink:0;}
+.sc-names{flex:1;min-width:0;}
+.sc-zh{font-size:14px;font-weight:700;color:var(--red);}
+.sc-en{font-size:10px;color:var(--ink3);}
+.sc-desc{font-size:11px;color:var(--ink2);line-height:1.6;margin-bottom:4px;}
+.sc-pct{font-size:10px;color:var(--jade);font-weight:700;margin-top:3px;}
+.sc-bar-wrap{margin-top:5px;height:4px;background:var(--p3);border-radius:2px;overflow:hidden;}
+.sc-bar{height:100%;background:var(--jade);border-radius:2px;transition:width .5s;}
+.sc-review{font-size:10px;color:var(--jade2);margin-top:3px;}
+
+/* ── INNER SCREEN ── */
+.inner{max-width:820px;margin:0 auto;padding:0 0 34px;}
+.inner-title{font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:var(--red);letter-spacing:1px;padding:14px 14px 2px;}
+.inner-sub{font-size:12px;color:var(--ink3);padding:0 14px 12px;line-height:1.6;}
+
+/* ── STUDY TABS ── */
+.tab-bar{display:flex;gap:6px;padding:0 14px 12px;flex-wrap:wrap;}
+.tab-btn{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:transparent;font-family:'Noto Serif TC',serif;font-size:12px;cursor:pointer;color:var(--ink2);transition:all .2s;font-weight:700;}
+.tab-btn.active{background:var(--red);color:#fff;border-color:var(--red);}
+.tab-btn:hover:not(.active){border-color:var(--gold2);}
+.tab-pane{display:none;padding:0 14px;}
+.tab-pane.visible{display:block;}
+
+/* ── CONCEPT BOX ── */
+.cbox{background:var(--p2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:13px;box-shadow:0 1px 4px var(--sh);}
+.cbox h3{font-size:14px;color:var(--red);margin-bottom:9px;font-family:'Cinzel',serif;font-weight:700;letter-spacing:.5px;}
+.cbox p{font-size:13px;color:var(--ink2);line-height:1.75;}
+.cbox p+p{margin-top:7px;}
+
+/* ── 口訣 VERSE BOX ── */
+.koujue{background:rgba(139,105,20,.08);border:1px solid var(--gold2);border-left:3px solid var(--gold);border-radius:8px;padding:11px 14px;margin:10px 0;font-style:italic;}
+.koujue-label{font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:4px;font-style:normal;}
+.koujue-zh{font-size:15px;color:var(--ink);line-height:1.7;font-weight:500;}
+.koujue-py{font-size:11px;color:var(--ink3);margin-top:2px;}
+.koujue-en{font-size:11px;color:var(--ink2);margin-top:4px;line-height:1.5;font-style:normal;}
+
+/* ── FLIP CARDS ── */
+.study-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:14px;}
+.flip-card{background:var(--p2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .25s;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 1px 4px var(--sh);}
+.flip-card:hover{border-color:var(--gold2);box-shadow:0 3px 10px var(--sh);}
+.flip-card.open{border-color:var(--jade);background:#fff;}
+
+/* ── HEX CARDS ── */
+.hex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:9px;margin-bottom:14px;}
+.hcard{background:var(--p);border:1px solid var(--border);border-radius:10px;padding:11px;cursor:pointer;transition:all .25s;box-shadow:0 1px 3px var(--sh);}
+.hcard:hover{border-color:var(--gold2);box-shadow:0 3px 10px var(--sh);}
+.hcard.open{border-color:var(--jade);background:#fff;}
+.hcard-top{display:flex;gap:8px;align-items:center;margin-bottom:5px;}
+.hcard-g{font-size:30px;line-height:1;flex-shrink:0;}
+.hcard-zh{font-size:13px;font-weight:700;color:var(--red);}
+.hcard-en{font-size:10px;color:var(--ink3);}
+.hcard-kw{font-size:10px;color:var(--gold);}
+.hcard-theme{font-size:11px;color:var(--jade);font-weight:700;}
+.hcard-detail{display:none;margin-top:8px;border-top:1px dashed var(--border);padding-top:8px;}
+.hcard.open .hcard-detail{display:block;}
+.hcard-meaning{font-size:11px;color:var(--ink2);line-height:1.65;margin-bottom:6px;}
+.hcard-mnem{font-size:11px;color:var(--jade);font-style:italic;line-height:1.5;background:rgba(30,107,58,.07);border-radius:6px;padding:6px 8px;margin-bottom:5px;}
+.hcard-pair{font-size:10px;display:flex;gap:10px;}
+
+/* ── TRI GROUP ── */
+.tri-group{margin-bottom:14px;}
+.tgh{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--p);border:1px solid var(--border);border-radius:10px 10px 0 0;}
+.tgh-g{font-size:28px;line-height:1;}
+.tgh-name{font-size:14px;font-weight:700;color:var(--red);}
+.tgh-sub{font-size:11px;color:var(--ink3);}
+.tgh-attr{font-size:11px;color:var(--jade);}
+.tgh-body{border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:10px;background:var(--p2);}
+
+/* ── FAMILY PATH ── */
+.family-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;padding:0 14px 14px;}
+.fcard{border:1px solid var(--border);border-radius:11px;padding:13px;background:var(--p2);cursor:pointer;transition:all .25s;box-shadow:0 1px 4px var(--sh);}
+.fcard:hover{border-color:var(--gold2);box-shadow:0 4px 12px var(--sh);transform:translateY(-1px);}
+.fcard.passed{background:#EEF7EE;border-color:#5a9a6a;}
+.fcard-top{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.fcard-g{font-size:28px;line-height:1;}
+.fcard-zh{font-size:14px;font-weight:700;color:var(--red);}
+.fcard-en{font-size:10px;color:var(--ink3);}
+.fcard-attr{font-size:11px;color:var(--jade);margin-bottom:3px;}
+.fcard-count{font-size:10px;color:var(--ink3);}
+
+/* ── 五行 ── */
+.wuxing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;margin-bottom:14px;}
+.wx-card{border-radius:11px;padding:14px;cursor:pointer;transition:all .25s;border:1.5px solid transparent;box-shadow:0 1px 4px var(--sh);}
+.wx-card:hover{opacity:.9;transform:translateY(-1px);}
+.wx-card.wood{background:#e8f5e3;border-color:#3a7a2a;}
+.wx-card.fire{background:#fdecea;border-color:#c0391b;}
+.wx-card.earth{background:#fdf6dc;border-color:#9a7a1a;}
+.wx-card.metal{background:#e8f0f6;border-color:#5a7a9a;}
+.wx-card.water{background:#e3eaf5;border-color:#1a4a8a;}
+.wx-elem{font-size:30px;margin-bottom:5px;}
+.wx-name-zh{font-size:17px;font-weight:700;margin-bottom:2px;}
+.wx-card.wood .wx-name-zh{color:var(--wood);}
+.wx-card.fire .wx-name-zh{color:var(--fire);}
+.wx-card.earth .wx-name-zh{color:var(--earth);}
+.wx-card.metal .wx-name-zh{color:var(--metal);}
+.wx-card.water .wx-name-zh{color:var(--water);}
+.wx-name-en{font-size:11px;color:var(--ink3);margin-bottom:6px;}
+.wx-trigrams{font-size:12px;color:var(--ink2);margin-bottom:4px;}
+.wx-season{font-size:11px;font-style:italic;color:var(--ink3);}
+.wx-detail{display:none;margin-top:9px;border-top:1px dashed rgba(0,0,0,.12);padding-top:9px;}
+.wx-card.open .wx-detail{display:block;}
+.wx-detail p{font-size:11px;color:var(--ink2);line-height:1.65;}
+
+/* ── CHECKPOINT / QUIZ ── */
+.cp-wrap{padding:0 14px;}
+.cp-header{background:var(--p2);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:13px;text-align:center;box-shadow:0 1px 4px var(--sh);}
+.cp-title{font-size:14px;color:var(--red);font-weight:700;margin-bottom:3px;}
+.cp-sub{font-size:11px;color:var(--ink3);margin-bottom:9px;}
+.score-row{display:flex;gap:16px;justify-content:center;font-size:13px;color:var(--ink2);}
+.sv{font-weight:700;color:var(--red);}
+.q-box{background:var(--p2);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:11px;box-shadow:0 1px 4px var(--sh);}
+.q-prompt{text-align:center;min-height:68px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;}
+.q-qt{font-size:13px;text-align:center;color:var(--ink2);margin-bottom:14px;line-height:1.55;}
+
+/* ── QUIZ OPTIONS — responsive, max 4 columns ── */
+.q-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:11px;}
+.q-opt{padding:14px 8px;border:1px solid var(--border);background:var(--p);border-radius:9px;cursor:pointer;font-family:'Noto Serif TC',serif;font-size:13px;text-align:center;transition:all .2s;color:var(--ink);line-height:1.4;box-shadow:0 1px 3px var(--sh);}
+.q-opt:hover{border-color:var(--gold2);background:var(--p2);box-shadow:0 2px 8px var(--sh);}
+.q-opt.correct{background:#e8f5e9;border-color:#4a8a5a;color:#1a5c2a;}
+.q-opt.wrong{background:#fce4e4;border-color:var(--red);color:var(--red);}
+.q-opt.reveal{background:#e8f5e9;border-color:#4a8a5a;}
+/* ── GLYPH OPTIONS — large glyphs, max 4 columns ── */
+.q-opts.glyph-opts{grid-template-columns:repeat(auto-fit,minmax(100px,1fr));}
+.q-opts.glyph-opts .q-opt{font-size:52px;padding:16px 8px;line-height:1.1;}
+.q-fb{text-align:center;font-size:13px;min-height:20px;margin-bottom:11px;font-weight:500;}
+.pnote{font-size:10px;color:var(--lock);text-align:center;margin-top:9px;}
+.pass-box{background:#e8f5e9;border:1px solid #5a9a6a;border-radius:12px;padding:18px;text-align:center;}
+.fail-box{background:#fce4e4;border:1px solid #e0a0a0;border-radius:12px;padding:18px;text-align:center;}
+.result-icon{font-size:30px;margin-bottom:7px;}
+.result-title{font-size:18px;font-weight:700;margin-bottom:6px;}
+.pass-box .result-title{color:#1a5c2a;}
+.fail-box .result-title{color:var(--red);}
+.result-sub{font-size:13px;line-height:1.65;margin-bottom:13px;}
+.pass-box .result-sub{color:#2e6e3a;}
+.fail-box .result-sub{color:#7a2020;}
+
+/* ── FINAL EXAM ── */
+.final-intro{background:#FFFBEF;border:1.5px solid var(--gold);border-radius:12px;padding:18px;margin:0 14px 14px;text-align:center;box-shadow:0 2px 8px var(--sh);}
+.final-intro h3{font-family:'Cinzel',serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:7px;letter-spacing:1px;}
+.final-intro p{font-size:12px;color:var(--ink2);line-height:1.65;}
+
+/* ── MISC ── */
+.line-demo{display:flex;gap:12px;margin:12px 0;flex-wrap:wrap;}
+.line-item{text-align:center;background:var(--p);border:1px solid var(--border);border-radius:10px;padding:12px 16px;box-shadow:0 1px 3px var(--sh);}
+.info-row{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap;}
+.info-pill{background:var(--p);border:1px solid var(--border);border-radius:20px;padding:4px 13px;font-size:12px;color:var(--ink2);}
+.divider{border:none;border-top:1px solid var(--border);margin:14px 0;}
+
+/* ── PROGRESS RING ── */
+.prog-ring-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
+.prog-ring{transform:rotate(-90deg);}
+.prog-ring-track{fill:none;stroke:var(--p3);stroke-width:3;}
+.prog-ring-fill{fill:none;stroke:var(--jade);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .6s ease;}
+
+/* ── RESPONSIVE GRID CAPS ── */
+.study-grid{grid-template-columns:repeat(2,1fr);}
+.hex-grid{grid-template-columns:repeat(2,1fr);}
+.wuxing-grid{grid-template-columns:repeat(2,1fr);}
+.family-grid{grid-template-columns:repeat(2,1fr);}
+@media(min-width:480px){
+  .study-grid,.hex-grid{grid-template-columns:repeat(3,1fr);}
+  .wuxing-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media(min-width:700px){
+  .study-grid,.hex-grid{grid-template-columns:repeat(4,1fr);}
+  .family-grid{grid-template-columns:repeat(4,1fr);}
+}
+
+/* ── LANGUAGE-BASED DISPLAY ── */
+body:not([data-lang="en"]) .sc-en,
+body:not([data-lang="en"]) .hcard-en,
+body:not([data-lang="en"]) .fcard-en,
+body:not([data-lang="en"]) .koujue-en{display:none;}
+
+/* ── FONT SIZE INCREASES ── */
+.lang-btn{font-size:13px;}
+.back-btn{font-size:15px;}
+.btn-p,.btn-s,.btn-gold{font-size:15px;}
+.group-lbl{font-size:12px;}
+.hero-title{font-size:22px;}
+.hero-sub{font-size:14px;}
+.prog-pct{font-size:14px;}
+.snum{font-size:16px;}
+.sc-zh{font-size:16px;}
+.sc-en{font-size:12px;}
+.sc-desc{font-size:13px;}
+.sc-pct,.sc-review{font-size:12px;}
+.inner-title{font-size:18px;}
+.inner-sub{font-size:14px;}
+.tab-btn{font-size:14px;}
+.cbox h3{font-size:16px;}
+.cbox p{font-size:15px;}
+.koujue-label{font-size:12px;}
+.koujue-zh{font-size:16px;}
+.koujue-py{font-size:13px;}
+.koujue-en{font-size:13px;}
+.hcard-zh{font-size:15px;}
+.hcard-en,.hcard-kw{font-size:12px;}
+.hcard-theme{font-size:13px;}
+.hcard-meaning,.hcard-mnem{font-size:13px;}
+.hcard-pair{font-size:12px;}
+.tgh-name{font-size:16px;}
+.tgh-sub,.tgh-attr{font-size:13px;}
+.fcard-zh{font-size:16px;}
+.fcard-en,.fcard-count{font-size:12px;}
+.fcard-attr{font-size:13px;}
+.wx-name-zh{font-size:19px;}
+.wx-name-en,.wx-season{font-size:13px;}
+.wx-trigrams{font-size:14px;}
+.wx-detail p{font-size:13px;}
+.cp-title{font-size:16px;}
+.cp-sub{font-size:13px;}
+.score-row{font-size:15px;}
+.q-qt{font-size:15px;}
+.q-opt{font-size:15px;}
+.q-fb{font-size:15px;}
+.pnote{font-size:12px;}
+.result-title{font-size:20px;}
+.result-sub{font-size:15px;}
+.final-intro h3{font-size:18px;}
+.final-intro p{font-size:14px;}
+.info-pill{font-size:14px;}
+.tag{font-size:11px;}
+</style>
+</head>
+<body>
+
+<!-- ═══════ PATH SCREEN ═══════ -->
+<div id="s-path" class="screen visible">
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('zh-TW',this)">繁體</button>
+    <button class="lang-btn" onclick="setLang('zh-CN',this)">简体</button>
+    <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+  </div>
+  <div class="path-hero">
+    <div class="hero-title" id="hero-title">易經掌握之路</div>
+    <div style="font-family:'Cinzel',serif;font-size:13px;color:var(--gold);letter-spacing:1px;margin-bottom:3px;">I Ching Mastery Path</div>
+    <div class="hero-sub" id="hero-sub">循序漸進，以卦象為基石，建立深厚易學根基。<br>Eight modules. One ancient system. Study freely, test when ready.</div>
+    <div class="prog-row">
+      <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      <div class="prog-pct" id="prog-pct">0%</div>
+    </div>
+  </div>
+  <div class="stage-list" id="stage-list"></div>
+</div>
+
+<!-- ═══════ STUDY SCREEN ═══════ -->
+<div id="s-study" class="screen">
+  <div class="lang-bar">
+    <button class="lang-btn active" id="sb-tw" onclick="setLang('zh-TW',this)">繁體</button>
+    <button class="lang-btn" id="sb-cn" onclick="setLang('zh-CN',this)">简体</button>
+    <button class="lang-btn" id="sb-en" onclick="setLang('en',this)">EN</button>
+  </div>
+  <button class="back-btn" onclick="goPath()">← <span id="back-lbl">返回路徑</span></button>
+  <div class="inner">
+    <div class="inner-title" id="st-title"></div>
+    <div class="inner-sub" id="st-sub"></div>
+    <div class="tab-bar" id="st-tabs"></div>
+    <div id="st-content"></div>
+    <div style="padding:4px 14px 0;" class="btn-row">
+      <button class="btn-p" onclick="goCheckpoint(curStage)" id="start-cp-btn">開始測驗 →</button>
+      <button class="btn-s" onclick="goPath()" id="later-btn">返回</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FAMILY PATH SCREEN ═══════ -->
+<div id="s-family-path" class="screen">
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('zh-TW',this)">繁體</button>
+    <button class="lang-btn" onclick="setLang('zh-CN',this)">简体</button>
+    <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+  </div>
+  <button class="back-btn" id="fp-back-btn" onclick="goPath()">← 返回路徑</button>
+  <div class="inner">
+    <div class="inner-title" id="fp-title"></div>
+    <div class="inner-sub" id="fp-sub"></div>
+    <div style="padding:0 14px 10px;">
+      <div style="height:5px;background:var(--p3);border-radius:2px;overflow:hidden;margin-bottom:12px;">
+        <div id="fp-prog" style="height:100%;background:var(--jade);border-radius:2px;transition:width .4s;"></div>
+      </div>
+    </div>
+    <div class="family-grid" id="family-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════ FAMILY STUDY SCREEN ═══════ -->
+<div id="s-family-study" class="screen">
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('zh-TW',this)">繁體</button>
+    <button class="lang-btn" onclick="setLang('zh-CN',this)">简体</button>
+    <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+  </div>
+  <button class="back-btn" id="fs-back-btn">← 返回</button>
+  <div class="inner">
+    <div id="fs-header"></div>
+    <div class="hex-grid" id="fs-cards" style="padding:0 14px;"></div>
+    <div style="padding:0 14px;" class="btn-row">
+      <button class="btn-p" id="fs-start-btn" onclick="goFamilyQuiz()">開始測驗 →</button>
+      <button class="btn-s" id="fs-back-btn2">← 返回族群</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ CHECKPOINT SCREEN ═══════ -->
+<div id="s-checkpoint" class="screen">
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('zh-TW',this)">繁體</button>
+    <button class="lang-btn" onclick="setLang('zh-CN',this)">简体</button>
+    <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+  </div>
+  <button class="back-btn" id="cp-back-btn" onclick="goPath()">← 返回路徑</button>
+  <div class="inner">
+    <div class="cp-wrap">
+      <div class="cp-header">
+        <div class="cp-title" id="cp-title"></div>
+        <div class="cp-sub" id="cp-sub"></div>
+        <div class="score-row">
+          <span><span id="sc-c-lbl">正確</span> <span class="sv" id="sc-c">0</span></span>
+          <span><span id="sc-w-lbl">錯誤</span> <span class="sv" id="sc-w">0</span></span>
+          <span><span id="sc-r-lbl">剩餘</span> <span class="sv" id="sc-r">0</span></span>
+        </div>
+        <div style="font-size:10px;color:var(--lock);margin-top:5px;" id="cp-pass-note">全對才能解鎖 · 100% to pass</div>
+      </div>
+      <div class="q-box" id="q-box"></div>
+      <div id="result-box"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FINAL EXAM SCREEN ═══════ -->
+<div id="s-final" class="screen">
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('zh-TW',this)">繁體</button>
+    <button class="lang-btn" onclick="setLang('zh-CN',this)">简体</button>
+    <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+  </div>
+  <button class="back-btn" id="final-back-btn" onclick="goPath()">← 返回路徑</button>
+  <div class="inner">
+    <div class="final-intro" id="final-intro-box"></div>
+    <div class="cp-wrap">
+      <div id="final-cp-header" style="display:none;" class="cp-header">
+        <div class="cp-title" id="final-cp-title"></div>
+        <div class="cp-sub" id="final-cp-sub"></div>
+        <div class="score-row">
+          <span><span id="fsc-c-lbl">正確</span> <span class="sv" id="fsc-c">0</span></span>
+          <span><span id="fsc-w-lbl">錯誤</span> <span class="sv" id="fsc-w">0</span></span>
+          <span><span id="fsc-r-lbl">剩餘</span> <span class="sv" id="fsc-r">0</span></span>
+        </div>
+        <div style="font-size:10px;color:var(--lock);margin-top:5px;" id="final-pass-note">必須全對通過 · 100% required</div>
+      </div>
+      <div class="q-box" id="fq-box" style="display:none;"></div>
+      <div id="fresult-box"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════
+   LANGUAGE SYSTEM
+════════════════════════════════════════════════════ */
+let LANG='zh-TW';
+
+const TC2SC={
+  /* ── 陰陽/爻/卦 ── */
+  '陰':'阴','陽':'阳','爻':'爻','卦':'卦',
+  /* ── 八卦 ── */
+  '乾':'乾','坤':'坤','震':'震','巽':'巽','坎':'坎','艮':'艮','離':'离','兌':'兑',
+  /* ── 六十四卦 names ── */
+  '訟':'讼','師':'师','謙':'谦','豫':'豫','隨':'随','蠱':'蛊','臨':'临','觀':'观',
+  '賁':'贲','剝':'剥','復':'复','頤':'颐','遯':'遁','壯':'壮','晉':'晋','睽':'睽',
+  '蹇':'蹇','損':'损','夬':'夬','姤':'姤','萃':'萃','渙':'涣','濟':'济','豐':'丰',
+  '漸':'渐','歸':'归','恆':'恒','蠻':'蛮','履':'履','蒙':'蒙',
+  /* ── trigram attributes ── */
+  '識':'识','別':'别','屬':'属','傳':'传','統':'统','總':'总','覽':'览','點':'点',
+  '擊':'击','翻':'翻','轉':'转','顯':'显','測':'测','驗':'验','選':'选','項':'项',
+  '題':'题','請':'请','複':'复','習':'习','進':'进','階':'阶','純':'纯','創':'创',
+  '順':'顺','從':'从','險':'险','陷':'陷','靜':'静','麗':'丽','喜':'喜','悅':'悦',
+  '掌':'掌','積':'积','蓄':'蓄','節':'节','學':'学','觀':'观','臨':'临','蠱':'蛊',
+  '賁':'贲','復':'复','畜':'畜','過':'过','歸':'归','損':'损','遯':'遁','壯':'壮',
+  '晉':'晋','隨':'随','無':'无','訟':'讼','謙':'谦','頤':'颐','漸':'渐','豐':'丰',
+  /* ── UI / navigation ── */
+  '體':'体','簡':'简','語':'语','開':'开','徑':'径','試':'试','確':'确',
+  '錯':'错','誤':'误','後':'后','組':'组','時':'时','個':'个',
+  /* ── previously missing – stage names ── */
+  '兩':'两','號':'号','與':'与','終':'终','極':'极','礎':'础','鎖':'锁',
+  /* ── previously missing – UI strings ── */
+  '對':'对','繼':'继','續':'续','義':'义','記':'记','憶':'忆',
+  '這':'这','麼':'么','裡':'里','標':'标','實':'实','斷':'断','線':'线',
+  '條':'条','還':'还','數':'数','讀':'读','遠':'远','疊':'叠','於':'于','徵':'征',
+  '說':'说','陣':'阵','環':'环','內':'内','種':'种','連':'连','結':'结',
+  /* ── geographic / natural ── */
+  '澤':'泽','風':'风','長':'长','東':'东','國':'国','醫':'医',
+  /* ── hexagram themes ── */
+  '艱':'艰','機':'机','執':'执','爭':'争','軍':'军','隊':'队','紀':'纪',
+  '親':'亲','聯':'联','謹':'谨','滿':'满','遜':'逊','奮':'奋','發':'发',
+  '適':'适','應':'应','敗':'败','蒞':'莅','電':'电','決':'决','飾':'饰',
+  '來':'来','棟':'栋','彎':'弯','傷':'伤','倫':'伦','違':'违','礙':'碍',
+  '難':'难','誠':'诚','奪':'夺',
+};
+
+function toSC(str){
+  if(LANG!=='zh-CN') return str;
+  return str.split('').map(c=>TC2SC[c]||c).join('');
+}
+
+function t(zhTW,en){
+  if(LANG==='en') return en;
+  if(LANG==='zh-CN') return toSC(zhTW);
+  return zhTW;
+}
+
+function enOnly(str){
+  if(LANG!=='en') return str;
+  return str.replace(/[　-鿿＀-￯]+\s*/g,'').trim();
+}
+
+function hm(obj){
+  if(typeof obj==='string') return obj;
+  if(LANG==='en') return obj.en;
+  if(LANG==='zh-CN') return toSC(obj.zhTW);
+  return obj.zhTW;
+}
+
+function setLang(lang,btn){
+  LANG=lang;
+  document.body.dataset.lang=lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    if(b.textContent==='繁體'&&lang==='zh-TW') b.classList.add('active');
+    if(b.textContent==='简体'&&lang==='zh-CN') b.classList.add('active');
+    if(b.textContent==='EN'&&lang==='en') b.classList.add('active');
+  });
+  // Re-render current visible screen
+  const vis=document.querySelector('.screen.visible');
+  if(vis&&vis.id==='s-path') renderPath();
+  else if(vis&&vis.id==='s-study') openStage(curStage);
+  else if(vis&&vis.id==='s-family-path') openFamilyPath(curStage);
+  else if(vis&&vis.id==='s-final'){renderFinalIntro();updateLangLabels();}
+  else if(vis&&vis.id==='s-checkpoint') updateLangLabels();
+  else if(vis&&vis.id==='s-family-study') openFamilyStudy(curStage,curFamilyIdx);
+}
+
+/* ════════════════════════════════════════════════════
+   DATA — TRIGRAMS with 口訣
+════════════════════════════════════════════════════ */
+const TR=[
+  {id:'qian',g:'☰',zh:'乾',zhSC:'乾',en:'Heaven',py:'Qián',num:1,el:'天 Heaven',fam:'父 Father',dir:'西北 North West',attr:'創造 Creative',wx:'metal',
+   icon:'👑',
+   mnem:'三陽爻純陽 — Three solid yang lines, pure unbroken heaven. Creative force.',
+   koujue:{zh:'三連',py:'Sān lián',en:'"Three connected" — all three lines are unbroken solid yang. Pure heaven, nothing broken.'},
+   desc:{zhTW:'天，純陽之象。三條完整陽爻，天地之始，萬物創造之源。',zhCN:'天，纯阳之象。三条完整阳爻，天地之始，万物创造之源。',en:'Heaven — pure yang. Three complete solid lines. The origin of all things, the creative impulse of the cosmos.'}},
+  {id:'kun',g:'☷',zh:'坤',zhSC:'坤',en:'Earth',py:'Kūn',num:2,el:'地 Earth',fam:'母 Mother',dir:'西南 South West',attr:'順從 Receptive',wx:'earth',
+   icon:'🌍',
+   mnem:'三陰爻純陰 — Three broken yin lines, pure receptive earth. Nurturing.',
+   koujue:{zh:'六斷',py:'Liù duàn',en:'"Six broken" — all six line-positions are broken yin. Pure earth, nothing solid.'},
+   desc:{zhTW:'地，純陰之象。三條斷裂陰爻，承載萬物，溫柔包容之德。',zhCN:'地，纯阴之象。三条断裂阴爻，承载万物，温柔包容之德。',en:'Earth — pure yin. Three broken lines. It bears and nourishes all things. Yield and receive.'}},
+  {id:'zhen',g:'☳',zh:'震',zhSC:'震',en:'Thunder',py:'Zhèn',num:3,el:'雷 Thunder',fam:'長男 Eldest Son',dir:'東 East',attr:'震動 Arousing',wx:'wood',
+   icon:'⚡',
+   mnem:'一陽在下衝破兩陰 — Yang surges up through two yin: thunderclap from earth.',
+   koujue:{zh:'仰盂',py:'Yǎng yú',en:'"Upward-facing bowl" — one yang at base, two yin on top. Like a bowl open to heaven, thunder bursting upward.'},
+   desc:{zhTW:'雷，震動之象。陽爻在下，力量向上衝破，如春雷初鳴，萬物甦醒。',zhCN:'雷，震动之象。阳爻在下，力量向上冲破，如春雷初鸣，万物苏醒。',en:'Thunder — the arousing. One yang at the base surges upward through two yin. Like the first clap of spring thunder waking the earth.'}},
+  {id:'kan',g:'☵',zh:'坎',zhSC:'坎',en:'Water',py:'Kǎn',num:4,el:'水 Water',fam:'中男 Middle Son',dir:'北 North',attr:'險陷 Danger',wx:'water',
+   icon:'💧',
+   mnem:'一陽被兩陰包圍 — Yang trapped between two yin: bright core in danger.',
+   koujue:{zh:'中滿',py:'Zhōng mǎn',en:'"Full in the middle" — solid yang enclosed between two broken yin. Wisdom at the centre, danger all around.'},
+   desc:{zhTW:'水，險陷之象。陽爻居中被兩陰包夾，如水流於峽谷，危險中仍向前流淌。',zhCN:'水，险陷之象。阳爻居中被两阴包夹，如水流于峡谷，危险中仍向前流淌。',en:'Water — danger and depth. Yang wisdom enclosed by yin peril. Like a river in a gorge — it flows through regardless.'}},
+  {id:'gen',g:'☶',zh:'艮',zhSC:'艮',en:'Mountain',py:'Gèn',num:5,el:'山 Mountain',fam:'少男 Youngest Son',dir:'東北 North East',attr:'靜止 Stillness',wx:'earth',
+   icon:'🏔',
+   mnem:'陽在頂兩陰在下 — Yang cap on top: immovable mountain peak.',
+   koujue:{zh:'覆碗',py:'Fù wǎn',en:'"Overturned bowl" — one yang on top, two yin below. Like an upside-down bowl, the mountain stops all movement.'},
+   desc:{zhTW:'山，靜止之象。陽爻在頂，如山峰聳立，知止者方能長久。',zhCN:'山，静止之象。阳爻在顶，如山峰耸立，知止者方能长久。',en:'Mountain — stillness and stopping. Yang rests on top like a mountain peak. Know when to stop; that is wisdom.'}},
+  {id:'xun',g:'☴',zh:'巽',zhSC:'巽',en:'Wind',py:'Xùn',num:6,el:'風木 Wind/Wood',fam:'長女 Eldest Daughter',dir:'東南 South East',attr:'柔順 Penetrating',wx:'wood',
+   icon:'🌿',
+   mnem:'一陰在下兩陽在上 — Yin at base, two yang above: gentle penetration.',
+   koujue:{zh:'下斷',py:'Xià duàn',en:'"Broken at the bottom" — one yin at the base, two yang above. Wind enters from below, gentle but penetrating everywhere.'},
+   desc:{zhTW:'風，柔順之象。陰爻在下，兩陽在上，風從地面升起，無孔不入，柔而能克剛。',zhCN:'风，柔顺之象。阴爻在下，两阳在上，风从地面升起，无孔不入，柔而能克刚。',en:'Wind — gentle penetration. Yin at the root, two yang above. Wind enters everywhere from below, soft yet irresistible.'}},
+  {id:'li',g:'☲',zh:'離',zhSC:'离',en:'Fire',py:'Lí',num:7,el:'火 Fire',fam:'中女 Middle Daughter',dir:'南 South',attr:'附麗 Brightness',wx:'fire',
+   icon:'🔥',
+   mnem:'一陰在中兩陽包圍 — Yin in middle of two yang: bright outside, hollow within.',
+   koujue:{zh:'中虛',py:'Zhōng xū',en:'"Hollow in the middle" — yin at the centre, yang on outside. Like a flame: bright without, empty within.'},
+   desc:{zhTW:'火，光明之象。陰爻居中，兩陽環抱，外明內虛，如火焰發光，需依附於物。',zhCN:'火，光明之象。阴爻居中，两阳环抱，外明内虚，如火焰发光，需依附于物。',en:'Fire — clarity and clinging. Yin at the centre, yang on either side. Brilliant without, hollow within. Fire must cling to something to burn.'}},
+  {id:'dui',g:'☱',zh:'兌',zhSC:'兑',en:'Lake',py:'Duì',num:8,el:'澤 Lake',fam:'少女 Youngest Daughter',dir:'西 West',attr:'喜悅 Joyful',wx:'metal',
+   icon:'🪞',
+   mnem:'一陰在上兩陽在下 — Yin on top, two yang below: open lake surface.',
+   koujue:{zh:'上缺',py:'Shàng quē',en:'"Open at the top" — one yin on top, two yang below. Like a lake open to the sky, joyful and reflective.'},
+   desc:{zhTW:'澤，喜悅之象。陰爻在頂，兩陽在下，如湖面開放映天，溝通交流，令人愉悅。',zhCN:'泽，喜悦之象。阴爻在顶，两阳在下，如湖面开放映天，沟通交流，令人愉悦。',en:'Lake — joy and openness. Yin open at the top, two yang below. Like still water reflecting the sky, it delights all who come.'}},
+];
+const trMap={};TR.forEach(t=>trMap[t.num]=t);
+const trById={};TR.forEach(t=>trById[t.id]=t);
+
+const WUXING=[
+  {id:'wood',zh:'木',en:'Wood',emoji:'🌿',color:'wood',season:'春 Spring',direction:'東 East',
+   trigrams:['zhen','xun'],trNums:[3,6],
+   meaning:'Growth, expansion, new beginnings, flexibility. Wood energy rises upward like a tree.',
+   detail:{zhTW:'木對應肝膽。☳ 震（雷）象徵生長的爆發之力；☴ 巽（風木）象徵柔順滲透的蔓延。兩者共同涵蓋木的全貌——從迸發到滲入。',en:'Wood governs the liver and gallbladder. ☳ Zhèn (Thunder) is the explosive first burst of growth; ☴ Xùn (Wind/Wood) is the gentle, penetrating spread. Together they represent all of Wood\'s range — from eruption to infiltration.'},
+   keywords:{zhTW:'生長 · 擴展 · 柔韌',en:'Growth · Expansion · Flexibility'}},
+  {id:'fire',zh:'火',en:'Fire',emoji:'🔥',color:'fire',season:'夏 Summer',direction:'南 South',
+   trigrams:['li'],trNums:[7],
+   meaning:'Illumination, joy, transformation, clarity. Fire energy radiates outward in all directions.',
+   detail:{zhTW:'火對應心與小腸。☲ 離（火）充分體現這一特質——外明而內虛，如火焰發光卻燃燒自身。火必須依附於所照耀之物。',en:'Fire governs the heart and small intestine. ☲ Lí (Fire) embodies this fully — bright outside, yin hollow within, like a flame that gives light but consumes itself. It must cling to what it illuminates.'},
+   keywords:{zhTW:'光明 · 喜悅 · 轉化',en:'Illumination · Joy · Transformation'}},
+  {id:'earth',zh:'土',en:'Earth',emoji:'🌍',color:'earth',season:'季末 Late Summer',direction:'中央 Centre',
+   trigrams:['kun','gen'],trNums:[2,5],
+   meaning:'Stability, nourishment, grounding, transition. Earth energy holds all things together.',
+   detail:{zhTW:'土對應脾胃。☷ 坤（地）是純陰的包容力——無垠的大地。☶ 艮（山）是靜止與終止——土凝聚為山峰。兩者均體現土的安固根基之性。',en:'Earth governs the spleen and stomach. ☷ Kūn (Earth) is pure yin receptivity — the infinite field. ☶ Gèn (Mountain) is stillness and stopping — earth compressed into peak. Both express the grounding quality of Earth.'},
+   keywords:{zhTW:'穩定 · 滋養 · 過渡',en:'Stability · Nourishment · Transition'}},
+  {id:'metal',zh:'金',en:'Metal',emoji:'⚙️',color:'metal',season:'秋 Autumn',direction:'西 West',
+   trigrams:['qian','dui'],trNums:[1,8],
+   meaning:'Clarity, precision, contraction, letting go. Metal energy moves inward and downward.',
+   detail:{zhTW:'金對應肺與大腸。☰ 乾（天）是純粹的創造之力——金的最精煉形態。☱ 兌（澤）是喜悅的開放——金作為接納與回映的明鏡之面。',en:'Metal governs the lungs and large intestine. ☰ Qián (Heaven) is pure creative strength — metal at its most refined. ☱ Duì (Lake) is joyful openness — metal as the reflective surface that receives and returns.'},
+   keywords:{zhTW:'清明 · 收斂 · 放下',en:'Clarity · Contraction · Letting Go'}},
+  {id:'water',zh:'水',en:'Water',emoji:'💧',color:'water',season:'冬 Winter',direction:'北 North',
+   trigrams:['kan'],trNums:[4],
+   meaning:'Wisdom, flow, depth, stillness under danger. Water finds its own level, always.',
+   detail:{zhTW:'水對應腎與膀胱。☵ 坎（水淵）充分體現這一特質——陽之智慧被陰之險陷包圍，如峽谷中的河流。水仍然流過。靜水流深。',en:'Water governs the kidneys and bladder. ☵ Kǎn (Water/Abyss) embodies this — yang wisdom enclosed by yin danger, like a river in a gorge. It flows through regardless. Still water runs the deepest.'},
+   keywords:{zhTW:'智慧 · 流動 · 深度',en:'Wisdom · Flow · Depth'}},
+];
+const wxMap={};WUXING.forEach(w=>wxMap[w.id]=w);
+
+const HEX=[
+  {g:'䷀',zh:'乾',en:'The Creative',kw:1,up:1,lo:1,theme:'純粹創造',
+   meaning:{zhTW:'天上加天，純陽不息，創造之力無可阻擋。龍騰而起。',en:'Heaven over Heaven — pure yang, unstoppable creative force. The dragon rises.'},
+   mnem:{zhTW:'兩天相疊，一望無際。滿懷信心，勇往直前。',en:'Two heavens stacked: nothing but sky. Go forward with full confidence.'}},
+  {g:'䷁',zh:'坤',en:'The Receptive',kw:2,up:2,lo:2,theme:'純粹包容',
+   meaning:{zhTW:'地上加地，純陰承載，滋養萬物。牝馬隨行。',en:'Earth over Earth — pure yin, yielding and nourishing. The mare follows the stallion.'},
+   mnem:{zhTW:'兩地相疊，廣袤無垠。隨順而行，包容一切。',en:'Two earths: an endless field. Follow, do not lead. Receive everything.'}},
+  {g:'䷂',zh:'屯',en:'Initial Difficulty',kw:3,up:4,lo:3,theme:'艱難開始',
+   meaning:{zhTW:'水上雷下，如嫩芽破凍土而出。誕生之路從來不易。',en:'Water over Thunder — a plant pushing through frozen ground. Birth is always hard.'},
+   mnem:{zhTW:'雷動於下，水阻於上。奮力突破，春日終來。',en:'Thunder stirs below, water blocks above. Push through — spring will come.'}},
+  {g:'䷃',zh:'蒙',en:'Youthful Folly',kw:4,up:5,lo:4,theme:'童蒙求學',
+   meaning:{zhTW:'山上水下，山腳湧泉，尚未成河。求師問道，方能明智。',en:'Mountain over Water — the spring at the mountain foot, not yet a river. Seek a teacher.'},
+   mnem:{zhTW:'稚嫩之水困於山下。虛心求問，靜以待學。',en:'Young water trapped below the mountain. Ask, be still, and learn.'}},
+  {g:'䷄',zh:'需',en:'Waiting',kw:5,up:4,lo:1,theme:'等待時機',
+   meaning:{zhTW:'水上天下，雲聚而雨未降。歡欣等待，自信以待時。',en:'Water over Heaven — clouds gathering, rain not yet fallen. Wait with joyful confidence.'},
+   mnem:{zhTW:'天欲上升，水雲懸空。雨必將至，喜心等候。',en:'Heaven pushes up but water hovers. Rain will fall. Wait with joy.'}},
+  {g:'䷅',zh:'訟',en:'Conflict',kw:6,up:1,lo:4,theme:'訴訟爭執',
+   meaning:{zhTW:'天上水下，各執一端，方向相悖。及早尋求調解。',en:'Heaven over Water — each pulling in opposite directions. Seek mediation early.'},
+   mnem:{zhTW:'水向下流，天往上升。爭執不休，半途而止為宜。',en:'Water flows down; heaven pulls up. They argue. Stop halfway.'}},
+  {g:'䷆',zh:'師',en:'The Army',kw:7,up:2,lo:4,theme:'軍隊紀律',
+   meaning:{zhTW:'地上水下，軍隊藏於地中。以德領兵，非以強力。',en:'Earth over Water — an army hidden within the earth. Lead with virtue, not force.'},
+   mnem:{zhTW:'眾水潛藏於厚土之下，紀律嚴明之師從一將。',en:'Many waters beneath solid earth — disciplined troops beneath one general.'}},
+  {g:'䷇',zh:'比',en:'Holding Together',kw:8,up:4,lo:2,theme:'親比聯合',
+   meaning:{zhTW:'水上地下，水滲入土，萬物相連。及時結盟。',en:'Water over Earth — water soaks into earth, binding all together. Seek allies now.'},
+   mnem:{zhTW:'水入土中每一縫隙。早日結交，真誠為盟。',en:'Water seeps into every crack of earth. Bond early, bond sincerely.'}},
+  {g:'䷈',zh:'小畜',en:'Small Taming',kw:9,up:6,lo:1,theme:'小力積蓄',
+   meaning:{zhTW:'風上天下，微風難阻長空。小有阻礙，耐心處之。',en:'Wind over Heaven — a gentle breeze cannot stop the vast sky. Small obstacles; patience.'},
+   mnem:{zhTW:'柔風輕拂廣闊長天。雨尚未至，先理小事。',en:'Soft wind against vast heaven. No rain yet. Tend to small things.'}},
+  {g:'䷉',zh:'履',en:'Treading',kw:10,up:1,lo:8,theme:'謹慎行事',
+   meaning:{zhTW:'天上澤下，踩踏虎尾。謹慎前行，小心翼翼。',en:"Heaven over Lake — treading on the tiger's tail. Proceed with utmost care."},
+   mnem:{zhTW:'輕踩虎尾，含笑而行。如此則虎不噬人。',en:"Step lightly on the tiger's tail. Smile. It won't bite."}},
+  {g:'䷊',zh:'泰',en:'Peace',kw:11,up:2,lo:1,theme:'天地交泰',
+   meaning:{zhTW:'地上天下，陰降陽升，天地交泰，萬物通暢。',en:'Earth over Heaven — yin descends, yang rises; heaven and earth communicate freely.'},
+   mnem:{zhTW:'地坐天上，換位相融。泰運當頭，大吉大利。',en:'Earth sits on heaven — switched places to embrace. The great arrives.'}},
+  {g:'䷋',zh:'否',en:'Standstill',kw:12,up:1,lo:2,theme:'天地不交',
+   meaning:{zhTW:'天上地下，各自退縮，天地不交，萬事閉塞。',en:'Heaven over Earth — each retreating to its corner; no communication, no progress.'},
+   mnem:{zhTW:'天往上飛，地往下沉，漸行漸遠。大運離去。',en:'Heaven flies up, earth sinks down — they drift apart. The great departs.'}},
+  {g:'䷌',zh:'同人',en:'Fellowship',kw:13,up:1,lo:7,theme:'天下一家',
+   meaning:{zhTW:'天上火下，二者皆上升。光明磊落，與人同心協力。',en:'Heaven over Fire — both rise upward together. Unite with others openly, in the light.'},
+   mnem:{zhTW:'火與天俱升，志同道合者攜手向上。坦誠待人。',en:'Fire and heaven both rise — kindred spirits ascending together. Be open.'}},
+  {g:'䷍',zh:'大有',en:'Great Possession',kw:14,up:7,lo:1,theme:'豐收盈滿',
+   meaning:{zhTW:'火上天下，烈日當空，照耀萬物。大富大貴，謙遜自持。',en:'Fire over Heaven — the sun at its zenith, illuminating all. Great wealth; stay humble.'},
+   mnem:{zhTW:'火燃天上，無所隱藏。豐收已至，切記謙遜。',en:'Fire blazes above heaven — nothing hidden. Abundance arrives. Stay humble.'}},
+  {g:'䷎',zh:'謙',en:'Modesty',kw:15,up:2,lo:5,theme:'謙遜自牧',
+   meaning:{zhTW:'地上山下，高山藏於地下。謙遜者終得彰顯。',en:'Earth over Mountain — the tall mountain hidden under earth. The humble are exalted.'},
+   mnem:{zhTW:'山自埋於地下。低者終將被抬舉。',en:'Mountain buries itself under earth. The low is always raised up.'}},
+  {g:'䷏',zh:'豫',en:'Enthusiasm',kw:16,up:3,lo:2,theme:'雷地奮發',
+   meaning:{zhTW:'雷上地下，春雷初動，萬物甦醒。以音樂喜悅鼓舞眾人。',en:'Thunder over Earth — the first thunder of spring. Inspire the people with music and joy.'},
+   mnem:{zhTW:'春雷從地而發。音樂與喜悅，激勵眾人前行！',en:'Thunder erupts from earth in spring. Music, joy — mobilise!'}},
+  {g:'䷐',zh:'隨',en:'Following',kw:17,up:8,lo:3,theme:'隨時適應',
+   meaning:{zhTW:'澤上雷下，雷止於黃昏。隨時應變，順勢而為。',en:'Lake over Thunder — thunder stills at dusk. Adapt to the moment.'},
+   mnem:{zhTW:'雷息澤中，夜幕將至。順應時機，隨天地之節律。',en:'Thunder rests in the lake at evening — follow the rhythm of time.'}},
+  {g:'䷑',zh:'蠱',en:'Decay',kw:18,up:5,lo:6,theme:'整治腐敗',
+   meaning:{zhTW:'山上風下，風困於山下，積腐敗壞。整治敗壞，重新振作。',en:'Mountain over Wind — wind trapped under mountain; stagnation and rot. Fix what is spoiled.'},
+   mnem:{zhTW:'風困山下，無法流通。擼起袖子，著手整頓。',en:"Wind can't blow under the mountain. Roll up your sleeves."}},
+  {g:'䷒',zh:'臨',en:'Approach',kw:19,up:2,lo:8,theme:'大人蒞臨',
+   meaning:{zhTW:'地上澤下，上位者親近下位，以寬厚關懷相待。',en:'Earth over Lake — the high approaches the low with generosity and care.'},
+   mnem:{zhTW:'大地俯臨湖澤，威權近至。以寬仁之心相近。',en:'Earth looms over lake — authority draws near. Be generous in approach.'}},
+  {g:'䷓',zh:'觀',en:'Contemplation',kw:20,up:6,lo:2,theme:'觀風察民',
+   meaning:{zhTW:'風上地下，風行大地，無所不見。觀察在先，行動在後。',en:'Wind over Earth — wind travels everywhere, seeing all. Observe before acting.'},
+   mnem:{zhTW:'風掃大地，洞察一切。治理之前，先觀民情。',en:'Wind sweeps across the earth. Watch the land before you rule.'}},
+  {g:'䷔',zh:'噬嗑',en:'Biting Through',kw:21,up:7,lo:3,theme:'雷電決斷',
+   meaning:{zhTW:'火上雷下，雷電咬斷阻礙。果斷執法，排除障礙。',en:'Fire over Thunder — lightning biting through the obstacle. Apply the law decisively.'},
+   mnem:{zhTW:'齒間有物卡住，咬斷即可！',en:"Something stuck between the teeth — bite through it!"}},
+  {g:'䷕',zh:'賁',en:'Grace',kw:22,up:5,lo:7,theme:'文飾之美',
+   meaning:{zhTW:'山上火下，火光映照黃昏山色。文飾服務於本質，不可本末倒置。',en:'Mountain over Fire — firelight illuminates the mountain at dusk. Beauty serves substance.'},
+   mnem:{zhTW:'夕陽火光映山。形式服務內容，而非反其道而行。',en:'Firelight on the mountain at sunset. Form serves content, not the reverse.'}},
+  {g:'䷖',zh:'剝',en:'Splitting Apart',kw:23,up:5,lo:2,theme:'陰盛剝陽',
+   meaning:{zhTW:'山上地下，山從根基剝落。靜待休養，不可強求。',en:'Mountain over Earth — the mountain erodes from its base. Rest; do not force.'},
+   mnem:{zhTW:'五陰蠶食頂上最後一陽。靜以待變，切勿妄動。',en:"Five yin lines eat the last yang on top. Wait it out. Don't act."}},
+  {g:'䷗',zh:'復',en:'Return',kw:24,up:2,lo:3,theme:'一陽來復',
+   meaning:{zhTW:'地上雷下，一陽歸來，重生於六陰之下。新的循環開始了。',en:'Earth over Thunder — the first yang returns beneath six yin. A new cycle begins.'},
+   mnem:{zhTW:'一點陽氣萌於純陰之下。光明回歸，生機復現。',en:'One tiny yang sprouts at the base of pure yin earth. The light returns.'}},
+  {g:'䷘',zh:'无妄',en:'Innocence',kw:25,up:1,lo:3,theme:'天真無邪',
+   meaning:{zhTW:'天上雷下，依天然本能而動，不存計算之心。',en:'Heaven over Thunder — act from pure natural impulse, without calculation.'},
+   mnem:{zhTW:'自然回應，非出謀略。毫無私心隱藏。',en:'React naturally, not strategically. No hidden motive.'}},
+  {g:'䷙',zh:'大畜',en:'Great Taming',kw:26,up:5,lo:1,theme:'蓄積大力',
+   meaning:{zhTW:'山上天下，大能被抑止。蓄積智慧，方可行動。',en:'Mountain over Heaven — vast energy held in check. Accumulate wisdom before acting.'},
+   mnem:{zhTW:'天力衝山，巨能內蓄。積蓄力量，厚積薄發。',en:'Heaven strains against mountain — vast power contained. Store up strength.'}},
+  {g:'䷚',zh:'頤',en:'Nourishment',kw:27,up:5,lo:3,theme:'頤養正道',
+   meaning:{zhTW:'山上雷下，口之象徵。謹慎飲食，謹言慎行。',en:'Mountain over Thunder — the image of a mouth. Watch what you eat and what you say.'},
+   mnem:{zhTW:'上下兩陽如顎，四陰如口。口乃進食出言之所。',en:'Top and bottom yang form the jaw; four yin make the open mouth.'}},
+  {g:'䷛',zh:'大過',en:'Great Excess',kw:28,up:8,lo:6,theme:'棟梁彎折',
+   meaning:{zhTW:'澤上風下，棟梁超載彎曲。立即行動，否則折斷。',en:'Lake over Wind — the ridgepole overloaded and bending. Act immediately or it breaks.'},
+   mnem:{zhTW:'四強陽居中，弱陰在端，棟梁彎折，危在旦夕。',en:'Four strong yangs in the middle, weak yin at ends — the beam bows.'}},
+  {g:'䷜',zh:'坎',en:'The Abyss',kw:29,up:4,lo:4,theme:'重重危險',
+   meaning:{zhTW:'水上水下，落入深淵，再度跌落。保持中定，切勿慌亂。',en:"Water over Water — falling into the pit, then falling again. Stay centred; don't panic."},
+   mnem:{zhTW:'兩重險陷相疊。不必驚慌，水自流過。',en:"Two abysses stacked. Don't panic — the water flows through regardless."}},
+  {g:'䷝',zh:'離',en:'The Clinging',kw:30,up:7,lo:7,theme:'光明相附',
+   meaning:{zhTW:'火上火下，光明倍增。依附持久之物，切勿燃盡自身。',en:'Fire over Fire — brilliant light doubled. Cling to what is lasting; do not burn out.'},
+   mnem:{zhTW:'兩日熊熊燃燒，耀眼奪目。依附能滋養自己的事物。',en:'Two suns blazing. Dazzling light. Cling to what sustains you.'}},
+  {g:'䷞',zh:'咸',en:'Influence',kw:31,up:8,lo:5,theme:'感應相吸',
+   meaning:{zhTW:'澤上山下，柔順之澤覆於靜止之山。相互感應，不施強力。',en:'Lake over Mountain — the yielding lake atop the still mountain. Mutual influence without force.'},
+   mnem:{zhTW:'澤潤山，山承澤。自然感應，無需強迫。',en:'Lake moistens the mountain; mountain supports the lake. No forcing.'}},
+  {g:'䷟',zh:'恆',en:'Duration',kw:32,up:3,lo:6,theme:'持之以恆',
+   meaning:{zhTW:'雷上風下，雷風相益。以恆常之道持久不懈。',en:'Thunder over Wind — thunder and wind reinforce each other. Endure through consistency.'},
+   mnem:{zhTW:'雷與風相輔相成。堅守方向，持之以恆。',en:'Thunder and wind together strengthen each other. Stay the course.'}},
+  {g:'䷠',zh:'遯',en:'Retreat',kw:33,up:1,lo:5,theme:'知退保身',
+   meaning:{zhTW:'天上山下，陰氣自下滋長，天道退隱。審時度勢，明智退避。',en:'Heaven over Mountain — heaven retreats as yin advances from below. Withdraw wisely.'},
+   mnem:{zhTW:'兩陰從下滲入，天退身而行。知進退，善把握時機。',en:'Two yin lines creep in from below. Heaven backs away — clever timing.'}},
+  {g:'䷡',zh:'大壯',en:'Great Power',kw:34,up:3,lo:1,theme:'陽盛大壯',
+   meaning:{zhTW:'雷上天下，四強陽奮勇向上。以正義駕馭強力。',en:'Thunder over Heaven — four strong yang lines surge upward. Use power with righteousness.'},
+   mnem:{zhTW:'雷聲壓天，爆發之力。公羊衝撞籬笆，強而有力。',en:'Thunder atop heaven — explosive strength. The ram butts the fence.'}},
+  {g:'䷢',zh:'晉',en:'Progress',kw:35,up:7,lo:2,theme:'日出大地',
+   meaning:{zhTW:'火上地下，旭日升於大地之上。穩步前進，展現自我。',en:'Fire over Earth — the sun rising above the earth. Steady, visible progress.'},
+   mnem:{zhTW:'太陽升於大地。穩步向前，讓人看見你。',en:'Sun rises over the earth. Advance steadily. Be seen.'}},
+  {g:'䷣',zh:'明夷',en:'Darkening of Light',kw:36,up:2,lo:7,theme:'光明受傷',
+   meaning:{zhTW:'地上火下，光明被埋於地下。隱藏光芒，方能求存。',en:'Earth over Fire — the brilliant sun buried under earth. Conceal your light to survive.'},
+   mnem:{zhTW:'藏光守正——文王身陷囹圄仍堅持。內守真誠，外示謙遜。',en:'Hide your light — King Wen persevered in prison. Stay true inside.'}},
+  {g:'䷤',zh:'家人',en:'The Family',kw:37,up:6,lo:7,theme:'家庭倫理',
+   meaning:{zhTW:'風上火下，風助火勢，猶如家族倫理維繫整個家庭。',en:'Wind over Fire — wind feeds fire as family roles sustain the whole household.'},
+   mnem:{zhTW:'火由內而暖，風將溫暖外傳。各安其位，各盡其責。',en:'Fire warms from within; wind carries warmth outward. Each in their place.'}},
+  {g:'䷥',zh:'睽',en:'Opposition',kw:38,up:7,lo:8,theme:'火澤相違',
+   meaning:{zhTW:'火上澤下，火升澤降，相違相對，各盡其性。',en:'Fire over Lake — fire rises, lake sinks; opposites yet each fulfils its nature.'},
+   mnem:{zhTW:'火與澤方向相反，在小事上對立反能相補。',en:'Fire and lake move opposite — in small matters, opposites complement.'}},
+  {g:'䷦',zh:'蹇',en:'Obstruction',kw:39,up:4,lo:5,theme:'山水阻礙',
+   meaning:{zhTW:'水上山下，前有險水，後有山阻。廣結善緣，尋求援助。',en:"Water over Mountain — dangerous water ahead, mountain behind. Seek allies."},
+   mnem:{zhTW:'前有險阻，退路已斷。轉向西南，前路開通。',en:"Danger in front, can't retreat. Turn to the southwest — the way is open."}},
+  {g:'䷧',zh:'解',en:'Deliverance',kw:40,up:3,lo:4,theme:'雷雨解難',
+   meaning:{zhTW:'雷上水下，春雷春雨消融冰霜。阻礙已除，前路開通。',en:'Thunder over Water — spring thunder and rain dissolve the frost. The obstruction clears.'},
+   mnem:{zhTW:'雷破冰，雨洗塵。阻礙已解，迅速行動。',en:'Thunder breaks the ice; rain washes away the debris. Move quickly.'}},
+  {g:'䷨',zh:'損',en:'Decrease',kw:41,up:5,lo:8,theme:'損下益上',
+   meaning:{zhTW:'山上澤下，損下益上。減損有時反而是增益。',en:'Mountain over Lake — decrease below to strengthen above. Less is sometimes more.'},
+   mnem:{zhTW:'兩碗誠心供奉勝過盛宴虛情。',en:'Two small bowls offered sincerely outweigh grand, insincere feasts.'}},
+  {g:'䷩',zh:'益',en:'Increase',kw:42,up:6,lo:3,theme:'損上益下',
+   meaning:{zhTW:'風上雷下，二者相互增益向上。損上以益下。',en:'Wind over Thunder — both reinforce each other upward. Take from above to give below.'},
+   mnem:{zhTW:'風雷相增強，從有餘者取，施予不足者。',en:'Wind and thunder both intensify — take from those who have much.'}},
+  {g:'䷪',zh:'夬',en:'Breakthrough',kw:43,up:8,lo:1,theme:'決斷果敢',
+   meaning:{zhTW:'澤上天下，五陽之上尚存一陰。在朝廷公開宣示真相。',en:"Lake over Heaven — one yin remains above five yangs. Proclaim the truth in the king's court."},
+   mnem:{zhTW:'一陰頑守頂端，五陽奮力上推。公開宣告，光明正大。',en:"One yin clings at top; five yang push up. Announce it openly."}},
+  {g:'䷫',zh:'姤',en:'Coming to Meet',kw:44,up:1,lo:6,theme:'陰長遇陽',
+   meaning:{zhTW:'天上風下，一陰出現於五陽之下。意外之事將至。',en:'Heaven over Wind — one yin appears beneath five yangs. Something unexpected arrives.'},
+   mnem:{zhTW:'一絲陰氣在五陽之下悄然滋長。切勿讓其悄然主導。',en:"One small yin spreads under five yang. Don't let it quietly take over."}},
+  {g:'䷬',zh:'萃',en:'Gathering',kw:45,up:8,lo:2,theme:'澤地聚集',
+   meaning:{zhTW:'澤上地下，四方之水匯聚於澤。凝聚眾人，共同聚集。',en:'Lake over Earth — water gathers in the lake from all directions. Assemble the people.'},
+   mnem:{zhTW:'四方水流匯聚大澤。召集眾人，共聚一堂。',en:'Waters converge from everywhere into the great lake. Bring people together.'}},
+  {g:'䷭',zh:'升',en:'Pushing Upward',kw:46,up:2,lo:6,theme:'地風上升',
+   meaning:{zhTW:'地上風下，樹木自然向上生長，不費氣力。',en:'Earth over Wind — the tree grows upward through the earth without strain.'},
+   mnem:{zhTW:'嫩苗破土而出，緩慢而不可阻擋。意志終將克服一切。',en:'The sapling pushes through soil — gradual, unstoppable. Will overcomes.'}},
+  {g:'䷮',zh:'困',en:'Oppression',kw:47,up:8,lo:4,theme:'澤水困境',
+   meaning:{zhTW:'澤上水下，澤水已盡。默默忍耐，言語無益。',en:'Lake over Water — the lake has drained away. Endure in silence; words are useless.'},
+   mnem:{zhTW:'湖水乾涸，言語失效。以從容之心堅忍度過。',en:'The lake is empty. Words fail now. Endure with grace.'}},
+  {g:'䷯',zh:'井',en:'The Well',kw:48,up:4,lo:6,theme:'木上有水',
+   meaning:{zhTW:'水上風下，水井滋養所有前來汲水之人，取之不竭。',en:'Water over Wind — the well nourishes all who come, inexhaustibly.'},
+   mnem:{zhTW:'城鎮更迭，水井長存。維護你的根本之源。',en:'Towns change, the well stays. Maintain your source.'}},
+  {g:'䷰',zh:'革',en:'Revolution',kw:49,up:8,lo:7,theme:'水火相革',
+   meaning:{zhTW:'澤上火下，水火相革，相互轉化。變革須在適當時機方能到來。',en:'Lake over Fire — water and fire transform each other. Change comes at the right moment.'},
+   mnem:{zhTW:'等待時機成熟，再果斷行動。革命只在時機成熟時方可發動。',en:'Wait for the right day; then act decisively. Revolution only when the time is ripe.'}},
+  {g:'䷱',zh:'鼎',en:'The Cauldron',kw:50,up:7,lo:6,theme:'火風鼎新',
+   meaning:{zhTW:'火上風下，神聖之鼎滋養並轉化置於其中的一切。',en:'Fire over Wind — the sacred cauldron nourishes and transforms what is placed within.'},
+   mnem:{zhTW:'烹煮智慧與美德，只饗有德之人。',en:'Cook wisdom and virtue together — feed only the worthy.'}},
+  {g:'䷲',zh:'震',en:'The Arousing',kw:51,up:3,lo:3,theme:'雷上加雷',
+   meaning:{zhTW:'雷上雷下，震驚接連而至。賢者於震動中保持內心平靜。',en:'Thunder over Thunder — shock upon shock. The sage remains calm at the centre.'},
+   mnem:{zhTW:'兩聲雷鳴。第一聲驚嚇，第二聲考驗。內心保持靜定。',en:'Two thunderclaps. The first shocks; the second tests. Stay still inside.'}},
+  {g:'䷳',zh:'艮',en:'Keeping Still',kw:52,up:5,lo:5,theme:'山上加山',
+   meaning:{zhTW:'山上山下，絕對靜止。精確知曉何時當止。',en:'Mountain over Mountain — absolute stillness. Know precisely where to stop.'},
+   mnem:{zhTW:'兩山相疊，背脊靜止，心思清明。',en:'Two mountains stacked — the back is still, the mind is clear.'}},
+  {g:'䷴',zh:'漸',en:'Gradual Progress',kw:53,up:6,lo:5,theme:'循序漸進',
+   meaning:{zhTW:'風上山下，大雁循序遷徙。循序漸進，不可走捷徑。',en:'Wind over Mountain — the wild goose migrates in careful stages. No shortcuts.'},
+   mnem:{zhTW:'雁陣飛行，逐步著陸。慢而穩，穩而成。',en:'Wild geese fly in formation, landing step by step. Slow is sure.'}},
+  {g:'䷵',zh:'歸妹',en:'Marrying Maiden',kw:54,up:3,lo:8,theme:'雷澤婚配',
+   meaning:{zhTW:'雷上澤下，喜悅激動促發行動。了解自己在事物中的位置。',en:'Thunder over Lake — joyful excitement leads to action. Know your place in things.'},
+   mnem:{zhTW:'小妹嫁入夫家，滿懷欣喜卻須居於從屬之位。',en:'The younger sister marries into the household. Excited but subordinate.'}},
+  {g:'䷶',zh:'豐',en:'Abundance',kw:55,up:3,lo:7,theme:'雷火豐盛',
+   meaning:{zhTW:'雷上火下，光明與行動達於頂峰。巔峰之時，謹防衰退。',en:'Thunder over Fire — brilliance and action at their peak. At the zenith, guard against decline.'},
+   mnem:{zhTW:'正午之日無影。享受豐盛，並與人分享。',en:'The sun at noon casts no shadow. Enjoy abundance — and share it.'}},
+  {g:'䷷',zh:'旅',en:'The Wanderer',kw:56,up:7,lo:5,theme:'火山旅途',
+   meaning:{zhTW:'火上山下，旅人在山中紮營，遠離家鄉。',en:'Fire over Mountain — the traveller camps on the mountain, far from home.'},
+   mnem:{zhTW:'異鄉陌土。輕裝上路，慢慢建立信任。',en:'Stranger in a strange land. Travel light, earn trust slowly.'}},
+  {g:'䷸',zh:'巽',en:'The Gentle',kw:57,up:6,lo:6,theme:'風上加風',
+   meaning:{zhTW:'風上風下，柔順的堅持終將滲透一切，假以時日。',en:'Wind over Wind — gentle persistence penetrates everything, given time.'},
+   mnem:{zhTW:'兩重風，柔而不停。重申方向，堅持必有成效。',en:'Two winds: soft but relentless. Repeat your direction; it works.'}},
+  {g:'䷹',zh:'兌',en:'The Joyous',kw:58,up:8,lo:8,theme:'澤上加澤',
+   meaning:{zhTW:'澤上澤下，喜悅加倍，與友共享。真誠開放，令人愉悅。',en:'Lake over Lake — joy doubled and shared between friends. Sincere openness delights all.'},
+   mnem:{zhTW:'兩湖相互灌注。在喜悅中教學相長。',en:'Two lakes fill each other. Joy that teaches and learns.'}},
+  {g:'䷺',zh:'渙',en:'Dispersion',kw:59,up:6,lo:4,theme:'風水渙散',
+   meaning:{zhTW:'風上水下，風破冰解，消散僵硬。',en:'Wind over Water — wind breaks up the ice and disperses rigidity.'},
+   mnem:{zhTW:'風擊碎冰，僵固消融。渡過大水，正當其時。',en:'Wind shatters the ice — stiffness dissolves. Cross the great water.'}},
+  {g:'䷻',zh:'節',en:'Limitation',kw:60,up:4,lo:8,theme:'水澤有節',
+   meaning:{zhTW:'水上澤下，湖水漫至邊緣。設立明智限度，以防溢出。',en:'Water over Lake — the lake is full to the brim. Set wise limits before overflow.'},
+   mnem:{zhTW:'湖泊容量有限。找到能持續維持的節度。',en:'The lake can only hold so much. Find the limit that sustains.'}},
+  {g:'䷼',zh:'中孚',en:'Inner Truth',kw:61,up:6,lo:8,theme:'誠信感通',
+   meaning:{zhTW:'風上澤下，內心誠信向外共鳴。連魚兒也有所回應。',en:'Wind over Lake — inner sincerity resonates outward. Even the fish respond.'},
+   mnem:{zhTW:'白鶴在暗處鳴叫，幼雛從遠方應和。誠信感通萬物。',en:'The crane calls from the shadows — its young answer from afar. Sincerity reaches everything.'}},
+  {g:'䷽',zh:'小過',en:'Small Excess',kw:62,up:3,lo:5,theme:'稍有過分',
+   meaning:{zhTW:'雷上山下，小鳥飛得稍高了一些。只可小步前進。',en:'Thunder over Mountain — the small bird flies a little too high. Small steps only.'},
+   mnem:{zhTW:'小鳥不宜飛得過高。稍稍超越即可，不可過分。',en:'The small bird should not aim too high. Exceed only a little.'}},
+  {g:'䷾',zh:'既濟',en:'After Completion',kw:63,up:4,lo:7,theme:'事已成就',
+   meaning:{zhTW:'水上火下，每一爻均在正位。事已完成，仍需保持警惕。',en:'Water over Fire — every line is in its correct place. Completion achieved; stay vigilant.'},
+   mnem:{zhTW:'小狐幾乎渡過，尾巴卻濕了。成就帶來疏忽大意。',en:'The little fox almost crosses — then wets its tail. Completion breeds carelessness.'}},
+  {g:'䷿',zh:'未濟',en:'Before Completion',kw:64,up:7,lo:4,theme:'尚未完成',
+   meaning:{zhTW:'火上水下，每一爻均不在正位。尚未完成，循環重新開始。',en:'Fire over Water — every line is out of place. Not yet complete; the cycle begins again.'},
+   mnem:{zhTW:'小狐幾乎渡過，卻落入水中。終點之前，即是新的開始。',en:'The young fox nearly crosses — and falls in. Before the end is a new beginning.'}},
+];
+
+/* ════════════════════════════════════════════════════
+   STAGE DEFINITIONS
+════════════════════════════════════════════════════ */
+const STAGES=[
+  {id:'yinyang',zh:'陰陽兩爻',zhSC:'阴阳两爻',en:'Yin & Yang Lines',icon:'⚊',
+   desc:{zhTW:'萬象之始 — 陰爻與陽爻，一切卦象的基石。',zhCN:'万象之始 — 阴爻与阳爻，一切卦象的基石。',en:'Where everything begins — the broken yin line and the solid yang line. Master these two and the rest unfolds naturally.'},passed:false},
+  {id:'tri-glyph',zh:'八卦符號',zhSC:'八卦符号',en:'Trigram Glyphs & Names',icon:'☰',
+   desc:{zhTW:'認識八個卦象符號與名稱，並透過口訣加深記憶。',zhCN:'认识八个卦象符号与名称，并通过口诀加深记忆。',en:'Learn to recognise all 8 trigrams by sight — their glyphs, names, and the classical 口訣 verses that make them unforgettable.'},passed:false},
+  {id:'tri-attr',zh:'八卦屬性',zhSC:'八卦属性',en:'Trigram Attributes',icon:'☵',
+   desc:{zhTW:'每卦的自然象徵、家族角色與方位。',zhCN:'每卦的自然象征、家族角色与方位。',en:"Each trigram's natural element, family role, and cardinal direction — the rich meanings behind each glyph."},passed:false},
+  {id:'upper-lower',zh:'上卦與下卦',zhSC:'上卦与下卦',en:'Upper & Lower Logic',icon:'䷊',
+   desc:{zhTW:'兩卦相疊成一六十四卦，理解上下卦的內外關係。',zhCN:'两卦相叠成一六十四卦，理解上下卦的内外关系。',en:'Two trigrams stack to form one hexagram. The upper speaks to the outer world; the lower, to the inner self.'},passed:false},
+  {id:'wuxing',zh:'八卦五行',zhSC:'八卦五行',en:'Trigrams & Five Elements',icon:'🌿',
+   desc:{zhTW:'八卦與木火土金水五行的對應關係。',zhCN:'八卦与木火土金水五行的对应关系。',en:'How each of the 8 trigrams maps to one of the Five Elements (五行) — the living energetic system beneath the I Ching.'},passed:false},
+  {id:'hex-upper',zh:'識別上卦',zhSC:'识别上卦',en:'Identify Upper Trigram',icon:'☰↑',
+   desc:{zhTW:'研習全部六十四卦，依上卦分組。逐一通過每個家族的測驗，方可繼續前進。',zhCN:'研习全部六十四卦，依上卦分组。逐一通过每个家族的测验，方可继续前进。',en:'Study all 64 hexagrams grouped by their upper trigram. Pass each family\'s quiz to continue — one family at a time.'},
+   passed:false,isFamilyStage:true,familyField:'upper'},
+  {id:'hex-lower',zh:'識別下卦',zhSC:'识别下卦',en:'Identify Lower Trigram',icon:'☷↓',
+   desc:{zhTW:'以下卦為分組，重新審視全部六十四卦，從新角度加深辨識能力。',zhCN:'以下卦为分组，重新审视全部六十四卦，从新角度加深辨识能力。',en:'Now study the same 64 hexagrams grouped by lower trigram — deepening your recognition from a new angle.'},
+   passed:false,isFamilyStage:true,familyField:'lower'},
+  {id:'hex-both',zh:'上下卦合一',zhSC:'上下卦合一',en:'Both Trigrams Together',icon:'䷾',
+   desc:{zhTW:'整合測驗——任意一卦，同時辨識上下兩卦。融會貫通之時。',zhCN:'整合测验——任意一卦，同时辨识上下两卦。融会贯通之时。',en:'The integration test — name both upper and lower trigrams for any hexagram. This is where it all comes together.'},passed:false},
+];
+
+const FINAL_STAGE={id:'final',zh:'終極測驗',zhSC:'终极测验',en:'Final Test',icon:'✦',
+  desc:{zhTW:'四十題，涵蓋全部八個模組。真正的掌握就在眼前。',zhCN:'四十题，涵盖全部八个模块。真正的掌握就在眼前。',en:'40 questions across all eight modules. True mastery awaits.'},passed:false};
+
+const FAMILY_PROGRESS={
+  'hex-upper': TR.map(t=>({triNum:t.num,passed:false})),
+  'hex-lower': TR.map(t=>({triNum:t.num,passed:false})),
+};
+
+/* ════════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════════ */
+let curStage=0,curFamilyStageId='hex-upper',curFamilyIdx=0;
+let cpQs=[],cpIdx=0,cpC=0,cpW=0,answered=false;
+let fQs=[],fIdx=0,fC=0,fW=0,fAnswered=false;
+
+/* ════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════ */
+function sh(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('visible'));document.getElementById(id).classList.add('visible');}
+function goPath(){sh('s-path');renderPath();}
+function shuf(a){return[...a].sort(()=>Math.random()-.5);}
+function pick(a,n){return shuf(a).slice(0,n);}
+function stageDesc(s){
+  if(!s.desc) return s.descStr||'';
+  if(typeof s.desc==='string') return s.desc;
+  if(LANG==='en') return s.desc.en;
+  if(LANG==='zh-CN') return s.desc.zhCN;
+  return s.desc.zhTW;
+}
+
+/* ════════════════════════════════════════════════════
+   PATH RENDER
+════════════════════════════════════════════════════ */
+function passedCount(){
+  return STAGES.filter(s=>{
+    if(s.isFamilyStage) return FAMILY_PROGRESS[s.id]&&FAMILY_PROGRESS[s.id].every(f=>f.passed);
+    return s.passed;
+  }).length+(FINAL_STAGE.passed?1:0);
+}
+
+function renderPath(){
+  const total=STAGES.length+1;
+  const pct=Math.round(passedCount()/total*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('hero-title').textContent=LANG==='en'?'I Ching Mastery Path':(LANG==='zh-CN'?'易经掌握之路':'易經掌握之路');
+  document.getElementById('hero-sub').innerHTML=LANG==='en'?'Eight modules. One ancient system. Study freely, test when ready.':(LANG==='zh-CN'?'循序渐进，以卦象为基石，建立深厚易学根基。':'循序漸進，以卦象為基石，建立深厚易學根基。');
+
+  const nums=['1','2','3','4','5','6','7','8'];
+  let html='';
+  html+=`<div class="group-lbl">${LANG==='en'?'FOUNDATIONS':(LANG==='zh-CN'?'基础':'基礎')}</div>`;
+  STAGES.slice(0,5).forEach((s,i)=>{ html+=stageRowHTML(s,i,nums[i]); });
+  html+=`<div class="group-lbl">${LANG==='en'?'HEXAGRAM IDENTIFICATION':(LANG==='zh-CN'?'六十四卦识别':'六十四卦識別')}</div>`;
+  STAGES.slice(5,8).forEach((s,i)=>{ html+=stageRowHTML(s,i+5,nums[i+5]); });
+
+  const allCorePassed=STAGES.every(s=>{
+    if(s.isFamilyStage) return FAMILY_PROGRESS[s.id].every(f=>f.passed);
+    return s.passed;
+  });
+  const fs=FINAL_STAGE.passed?'passed':'';
+  const fb=FINAL_STAGE.passed
+    ?`<span class="tag tag-pass">✓ ${t('完成','Done')}</span>`
+    :allCorePassed
+      ?`<span class="tag tag-final">★ ${t('解鎖','Unlocked')}</span>`
+      :`<span class="tag tag-none">${t('完成全部後解鎖','Complete all to unlock')}</span>`;
+  html+=`<div class="group-lbl">${LANG==='en'?'FINAL':(LANG==='zh-CN'?'终极测验':'終極測驗')}</div>`;
+  html+=`<div class="srow"><div class="snum">✦</div>
+    <div class="scard final-card ${fs}" onclick="goFinal()">
+      <div class="sc-head"><span class="sc-icon">${FINAL_STAGE.icon}</span>
+        <div class="sc-names">
+          <div class="sc-zh">${LANG==='en'?FINAL_STAGE.en:(LANG==='zh-CN'?FINAL_STAGE.zhSC:FINAL_STAGE.zh)}</div>
+          <div class="sc-en">Final Test</div>
+        </div>${fb}</div>
+      <div class="sc-desc">${t('四十題，涵蓋全部八個模組——掌握之路的終點。','40 questions across all eight modules — the ultimate measure of your mastery.')}</div>
+      ${FINAL_STAGE.passed?`<div class="sc-review">🎉 ${t('恭喜！全部完成。','Congratulations — mastery complete!')}</div>`:''}
+      <div class="sc-bar-wrap"><div class="sc-bar" style="width:${FINAL_STAGE.passed?100:0}%;background:var(--gold);"></div></div>
+    </div></div>`;
+
+  document.getElementById('stage-list').innerHTML=html;
+}
+
+function stageRowHTML(s,idx,num){
+  let pct=0,badge='',reviewTag='';
+  if(s.isFamilyStage){
+    const fp=FAMILY_PROGRESS[s.id];
+    const p=fp.filter(f=>f.passed).length;
+    pct=Math.round(p/8*100);
+    badge=pct===100
+      ?`<span class="tag tag-pass">✓ ${t('通過','Passed')}</span>`
+      :`<span class="tag tag-open">${p}/8 ${t('族','families')}</span>`;
+    if(pct===100) reviewTag=`<div class="sc-review">${t('已通過 · 點擊複習','Passed — tap to review')}</div>`;
+  } else {
+    pct=s.passed?100:0;
+    badge=s.passed
+      ?`<span class="tag tag-pass">✓ ${t('通過','Passed')}</span>`
+      :`<span class="tag tag-open">● ${t('開放','Open')}</span>`;
+    if(s.passed) reviewTag=`<div class="sc-review">${t('已通過 · 點擊複習','Passed — tap to review')}</div>`;
+  }
+  const click=s.isFamilyStage?`onclick="openFamilyPath(${idx})"`:`onclick="openStage(${idx})"`;
+  const pctLabel=pct>0?`<div class="sc-pct">${pct}% ${t('完成','complete')}</div>`:'';
+  return `<div class="srow">
+    <div class="snum" style="font-size:${idx>=5?'14px':'16px'}">${num}</div>
+    <div class="scard ${pct===100?'passed':''}" ${click}>
+      <div class="sc-head">
+        <span class="sc-icon">${s.icon}</span>
+        <div class="sc-names">
+          <div class="sc-zh">${LANG==='en'?s.en:(LANG==='zh-CN'?(s.zhSC||toSC(s.zh)):s.zh)}</div>
+          <div class="sc-en">${s.en}</div>
+        </div>${badge}
+      </div>
+      <div class="sc-desc">${stageDesc(s)}</div>
+      ${pctLabel}${reviewTag}
+      <div class="sc-bar-wrap"><div class="sc-bar" style="width:${pct}%"></div></div>
+    </div></div>`;
+}
+
+/* ════════════════════════════════════════════════════
+   OPEN STAGE
+════════════════════════════════════════════════════ */
+function openStage(i){
+  curStage=i;
+  const s=STAGES[i];
+  document.getElementById('st-title').textContent=LANG==='en'?s.en:(LANG==='zh-CN'?(s.zhSC||toSC(s.zh)):s.zh);
+  document.getElementById('st-sub').textContent=stageDesc(s)+(s.passed?' — '+t('已通過，複習模式。','Passed — review mode.'):'');
+  document.getElementById('start-cp-btn').textContent=t('開始測驗 →','Start Test →');
+  document.getElementById('later-btn').textContent=t('返回','Back');
+  buildStudyTabs(i);
+  sh('s-study');updateLangLabels();
+}
+
+function buildStudyTabs(i){
+  const tb=document.getElementById('st-tabs');
+  const sc=document.getElementById('st-content');
+  if(i===5||i===6||i===7){
+    tb.innerHTML=`
+      <button class="tab-btn active" onclick="switchTab(0,this)">${t('上卦分組','By Upper')}</button>
+      <button class="tab-btn" onclick="switchTab(1,this)">${t('下卦分組','By Lower')}</button>
+      <button class="tab-btn" onclick="switchTab(2,this)">${t('全部六十四卦','All 64')}</button>`;
+    sc.innerHTML=`<div id="tc0" class="tab-pane visible">${buildHexGroupHTML('upper')}</div>
+      <div id="tc1" class="tab-pane">${buildHexGroupHTML('lower')}</div>
+      <div id="tc2" class="tab-pane">${buildHexListHTML()}</div>`;
+  } else {
+    tb.innerHTML='';
+    sc.innerHTML='<div class="tab-pane visible" style="padding:0 14px;">'+buildStudyContent(i)+'</div>';
+  }
+}
+
+function switchTab(idx,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('visible',i===idx));
+}
+
+/* ════════════════════════════════════════════════════
+   STUDY CONTENT BUILDERS
+════════════════════════════════════════════════════ */
+function buildStudyContent(i){
+  if(i===0) return studyYinYang();
+  if(i===1) return studyTriGlyph();
+  if(i===2) return studyTriAttr();
+  if(i===3) return studyUpperLower();
+  if(i===4) return studyWuxing();
+  return '';
+}
+
+function koujueBox(tr){
+  return `<div class="koujue">
+    <div class="koujue-label">口訣 · Classical Mnemonic Verse</div>
+    <div class="koujue-zh">「${tr.koujue.zh}」</div>
+    <div class="koujue-py">${tr.koujue.py}</div>
+    <div class="koujue-en">${tr.koujue.en}</div>
+  </div>`;}
+
+function studyYinYang(){
+  return `<div class="cbox"><h3>${t('兩種基本爻 · The Two Lines','The Two Fundamental Lines')}</h3>
+    <div class="line-demo">
+      <div class="line-item">
+        <div style="font-size:44px;margin-bottom:6px">⚊</div>
+        <div style="font-size:17px;font-weight:700;color:var(--red);margin-bottom:4px">${t('陽爻 Yang','Yang Line ⚊')}</div>
+        <div style="font-size:14px;color:var(--ink2);line-height:1.7">${t('實線 · 天 · 主動 · 奇數','Solid · Heaven · Active · Odd')}</div>
+      </div>
+      <div class="line-item">
+        <div style="font-size:44px;margin-bottom:6px">⚋</div>
+        <div style="font-size:17px;font-weight:700;color:#1a4a7a;margin-bottom:4px">${t('陰爻 Yin','Yin Line ⚋')}</div>
+        <div style="font-size:14px;color:var(--ink2);line-height:1.7">${t('斷線 · 地 · 被動 · 偶數','Broken · Earth · Passive · Even')}</div>
+      </div>
+    </div>
+  </div>
+  <div class="cbox"><h3>${t('三爻成卦','Three Lines Make One Trigram')}</h3>
+    <p>${t('三條爻由下往上堆疊，形成八卦中的一卦。兩卦相疊，形成六十四卦之一。','Stack 3 lines reading bottom to top — you get one trigram (one of 8). Stack 2 trigrams — you get one hexagram (one of 64).')}</p>
+    <p style="margin-top:8px;color:var(--jade);font-size:15px;">${t('三爻 → 八種組合 → 八卦　·　八卦 × 八卦 → 六十四卦','3 lines → 8 combinations → 8 trigrams　·　8 × 8 → 64 hexagrams')}</p>
+  </div>
+  <div class="cbox"><h3>${t('讀卦方向 · Reading Direction','Reading Direction — Bottom to Top')}</h3>
+    <p>${t('永遠從下往上讀。第一爻是基礎，第六爻是結果。','Lines are always read from the bottom up. Line 1 is the foundation; Line 6 (or 3 for trigrams) is the outcome.')}</p>
+    <div style="display:flex;gap:18px;align-items:center;margin-top:12px;flex-wrap:wrap;">
+      <div style="font-size:52px">☳</div>
+      <div style="font-size:14px;color:var(--ink2);line-height:2.2">
+        <div>${t('第三爻（頂）⚋ 陰','Line 3 (top) ⚋ Yin')}</div>
+        <div>${t('第二爻（中）⚋ 陰','Line 2 (mid) ⚋ Yin')}</div>
+        <div style="color:var(--red)">${t('第一爻（底）⚊ 陽 ← 基礎','Line 1 (bottom) ⚊ Yang ← foundation')}</div>
+      </div>
+      <div style="font-size:15px;color:var(--jade)">震 Zhèn<br>${t('雷 Thunder','Thunder')}</div>
+    </div>
+  </div>
+  <div style="margin-bottom:14px"></div>`;
+}
+
+function studyTriGlyph(){
+  const intro=`<div class="cbox"><h3>${t('八卦符號與口訣','The 8 Trigram Glyphs & Classical Verses')}</h3>
+    <p>${t('點擊每張卡片翻轉，查看卦名與口訣記憶法。古人以口訣記憶卦形，代代相傳。','Tap each card to reveal the name, pinyin, and classical 口訣 verse. These mnemonic phrases have been passed down for centuries.')}</p>
+  </div>`;
+  const grid='<div class="study-grid">'+TR.map(tr=>`
+    <div class="flip-card" id="sg-${tr.id}" onclick="flipSC('sg-${tr.id}','${tr.id}','glyph')">
+      <div style="font-size:44px;margin-bottom:6px">${tr.g}</div>
+      <div style="font-size:13px;color:var(--lock)">${t('點擊翻轉 · 查看口訣','Tap to reveal')}</div>
+    </div>`).join('')+'</div>';
+  const verses=`<div class="cbox"><h3>${t('口訣速查 · Quick Reference — All 8 Verses','Classical Verses — Quick Reference')}</h3>`+
+    TR.map(tr=>`<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px dashed var(--border);">
+      <span style="font-size:30px;flex-shrink:0">${tr.g}</span>
+      <div>
+        <span style="font-size:16px;font-weight:700;color:var(--red)">${LANG==='en'?tr.en:(LANG==='zh-CN'?toSC(tr.zh):tr.zh)}</span>
+        <span style="font-size:13px;color:var(--ink3);margin-left:6px">${tr.py}</span>
+        <div style="font-size:14px;color:var(--gold);font-style:italic;margin-top:2px">「${tr.koujue.zh}」${LANG==='en'?' — '+tr.koujue.en:''}</div>
+      </div>
+    </div>`).join('')+'</div>';
+  return intro+grid+verses+'<div style="margin-bottom:14px"></div>';
+}
+
+function studyTriAttr(){
+  return '<div class="study-grid">'+TR.map(tr=>`
+    <div class="flip-card" id="sa-${tr.id}" onclick="flipSC('sa-${tr.id}','${tr.id}','attr')">
+      <div style="font-size:38px;margin-bottom:4px">${tr.g}</div>
+      <div style="font-size:16px;font-weight:700;color:var(--red);margin-bottom:2px">${LANG==='en'?tr.en:(LANG==='zh-CN'?toSC(tr.zh):tr.zh)}</div>
+      <div style="font-size:13px;color:var(--lock)">${t('點擊查看屬性','Tap for attributes')}</div>
+    </div>`).join('')+'</div><div style="margin-bottom:14px"></div>';}
+
+function studyUpperLower(){
+  return `<div class="cbox"><h3>${t('上卦 + 下卦 = 六十四卦','Upper + Lower = One Hexagram')}</h3>
+    <p>${t('上三爻 = 上卦（外卦）代表外在環境。下三爻 = 下卦（內卦）代表內在自我。',
+    'The top 3 lines form the upper trigram (outer trigram) — the external situation. The bottom 3 lines form the lower trigram (inner trigram) — the inner self.')}</p>
+    <div style="display:flex;gap:14px;align-items:center;margin:16px 0;flex-wrap:wrap;">
+      <div style="text-align:center"><div style="font-size:48px">☰</div><div style="font-size:13px;color:var(--red)">${t('上卦 · 乾','Upper · Heaven')}</div></div>
+      <div style="font-size:26px;color:var(--gold)">+</div>
+      <div style="text-align:center"><div style="font-size:48px">☷</div><div style="font-size:13px;color:var(--jade)">${t('下卦 · 坤','Lower · Earth')}</div></div>
+      <div style="font-size:20px;color:var(--lock)">=</div>
+      <div style="text-align:center"><div style="font-size:48px">䷋</div><div style="font-size:13px;color:var(--ink2)">${t('否 · 第12卦','Pǐ · #12')}</div></div>
+    </div>
+  </div>
+  <div class="cbox"><h3>${t('如何讀一個六十四卦','How to Read a Hexagram')}</h3>
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+      <div style="font-size:60px">䷊</div>
+      <div style="font-size:14px;color:var(--ink2);line-height:2.3">
+        <div style="color:var(--red)">${t('第六爻 ⚊ ← 乾（上卦）頂爻','Line 6 ⚊ ← top of Heaven (upper)')}</div>
+        <div style="color:var(--red)">${t('第五爻 ⚊','Line 5 ⚊')}</div>
+        <div style="color:var(--red)">${t('第四爻 ⚊ ← 乾（上卦）底爻','Line 4 ⚊ ← base of Heaven (upper)')}</div>
+        <div style="color:var(--jade)">${t('第三爻 ⚋ ← 坤（下卦）頂爻','Line 3 ⚋ ← top of Earth (lower)')}</div>
+        <div style="color:var(--jade)">${t('第二爻 ⚋','Line 2 ⚋')}</div>
+        <div style="color:var(--jade)">${t('第一爻 ⚋ ← 基礎','Line 1 ⚋ ← foundation')}</div>
+      </div>
+      <div style="font-size:15px;color:var(--ink2)">${t('泰 · 第11卦','Tài · #11')}<br><span style="color:var(--red)">${t('上 ☰ 乾','Upper ☰ Qián')}</span><br><span style="color:var(--jade)">${t('下 ☷ 坤','Lower ☷ Kūn')}</span></div>
+    </div>
+  </div>
+  <div class="cbox"><h3>${t('8×8 矩陣','The 8×8 Matrix')}</h3>
+    <p>${t('每個六十四卦都是8種上卦與8種下卦的唯一組合。掌握8個基本卦，即可辨識全部64卦。','Every hexagram is a unique combination of one upper trigram and one lower trigram. Master the 8 trigrams and you hold the key to all 64 hexagrams.')}</p>
+  </div>
+  <div style="margin-bottom:14px"></div>`;
+}
+
+function studyWuxing(){
+  return `<div class="cbox"><h3>${t('五行理論 · Five Elements Theory','Five Elements — 五行 Wǔ Xíng')}</h3>
+    <p>${t('五行是中國哲學的基本框架。八卦各屬一行，連結易經與醫學、天文、季節等領域。',
+    '五行 (Wǔ Xíng) — the Five Phases — is one of the core frameworks of Chinese thought. Each trigram belongs to one element, linking the I Ching to medicine, astronomy, seasons, and more.')}</p>
+    <p><strong style="color:var(--jade)">${t('生（Shēng）相生：','Generating cycle:')}</strong> ${t('木→火→土→金→水→木','Wood → Fire → Earth → Metal → Water → Wood')}<br>
+    <strong style="color:var(--red)">${t('剋（Kè）相剋：','Overcoming cycle:')}</strong> ${t('木→土→水→火→金→木','Wood → Earth → Water → Fire → Metal → Wood')}</p>
+  </div>
+  <div class="wuxing-grid">${WUXING.map(w=>`
+    <div class="wx-card ${w.color}" id="wx-${w.id}" onclick="toggleWX('${w.id}')">
+      <div class="wx-elem">${w.emoji}</div>
+      <div class="wx-name-zh">${LANG==='en'?w.en:(LANG==='zh-CN'?toSC(w.zh):w.zh)} ${w.en}</div>
+      <div class="wx-name-en">${enOnly(w.season)} · ${enOnly(w.direction)}</div>
+      <div class="wx-trigrams">${w.trigrams.map(id=>{const tr=trById[id];return tr.g+' '+(LANG==='en'?tr.en:tr.zh);}).join(' · ')}</div>
+      <div class="wx-season">${hm(w.keywords)}</div>
+      <div class="wx-detail"><p>${hm(w.detail)}</p></div>
+    </div>`).join('')}</div>
+  <div class="cbox"><h3>${t('速查表 · All 8 Trigrams & Their Elements','Quick Reference — Trigrams & Elements')}</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;margin-top:7px;">
+      ${TR.map(tr=>{const w=wxMap[tr.wx];return`<div style="background:var(--p);border:1px solid var(--border);border-radius:9px;padding:9px;text-align:center;box-shadow:0 1px 3px var(--sh);">
+        <div style="font-size:28px;margin-bottom:4px">${tr.g}</div>
+        <div style="font-size:15px;font-weight:700;color:var(--red)">${LANG==='en'?tr.en:(LANG==='zh-CN'?toSC(tr.zh):tr.zh)}</div>
+        <div style="font-size:13px;margin-top:5px;color:var(--${tr.wx})">${w.emoji} ${LANG==='en'?w.en:w.zh}${LANG!=='en'?' '+w.en:''}</div>
+      </div>`;}).join('')}
+    </div>
+  </div>
+  <div style="margin-bottom:14px"></div>`;
+}
+
+function toggleWX(id){const el=document.getElementById('wx-'+id);if(el)el.classList.toggle('open');}
+
+function flipSC(elId,tId,mode){
+  const tr=TR.find(x=>x.id===tId);
+  const el=document.getElementById(elId);
+  if(!el) return;
+  const f=el.dataset.f==='1';
+  if(f){
+    el.dataset.f='0';el.classList.remove('open');
+    if(mode==='glyph') el.innerHTML=`<div style="font-size:44px;margin-bottom:6px">${tr.g}</div><div style="font-size:13px;color:var(--lock)">${t('點擊翻轉 · 查看口訣','Tap to reveal')}</div>`;
+    else el.innerHTML=`<div style="font-size:38px;margin-bottom:4px">${tr.g}</div><div style="font-size:16px;font-weight:700;color:var(--red);margin-bottom:2px">${LANG==='en'?tr.en:tr.zh}</div><div style="font-size:13px;color:var(--lock)">${t('點擊查看屬性','Tap for attributes')}</div>`;
+  } else {
+    el.dataset.f='1';el.classList.add('open');
+    const w=wxMap[tr.wx];
+    const trDesc=LANG==='en'?tr.desc.en:(LANG==='zh-CN'?tr.desc.zhCN:tr.desc.zhTW);
+    if(mode==='glyph'){
+      el.innerHTML=`<div style="font-size:40px;margin-bottom:5px">${tr.g}</div>
+        <div style="font-size:19px;font-weight:700;color:var(--red)">${LANG==='en'?tr.en:(LANG==='zh-CN'?toSC(tr.zh):tr.zh)}</div>
+        <div style="font-size:14px;color:var(--ink2)">${LANG!=='en'?tr.py:tr.en+' · '+tr.py}</div>
+        ${koujueBox(tr)}
+        <div style="font-size:13px;color:var(--ink2);margin-top:6px;line-height:1.6;font-style:italic">${trDesc}</div>`;
+    } else {
+      el.innerHTML=`<div style="font-size:32px;margin-bottom:4px">${tr.g}</div>
+        <div style="font-size:15px;font-weight:700;color:var(--red)">${LANG==='en'?tr.en:tr.zh}</div>
+        <div style="font-size:13px;color:var(--jade);line-height:1.9;margin-top:5px">
+          ${t('象','Element')} ${enOnly(tr.el)}<br>${t('家','Role')} ${enOnly(tr.fam)}<br>${t('方','Direction')} ${enOnly(tr.dir)}<br>${t('性','Quality')} ${enOnly(tr.attr)}<br>
+          <span style="color:var(--${tr.wx})">${w.emoji} ${LANG==='en'?w.en:w.zh}${LANG!=='en'?' '+w.en:''}</span>
+        </div>`;
+    }
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   HEX GROUP VIEWS
+════════════════════════════════════════════════════ */
+function buildHexGroupHTML(field){
+  let html=`<div class="cbox" style="margin-bottom:13px;"><h3>${field==='upper'?t('上卦分組','Grouped by Upper Trigram'):t('下卦分組','Grouped by Lower Trigram')}</h3>
+    <p style="font-size:12px">${t('點擊任意卦象卡片，展開完整含義與記憶法。','Tap any hexagram card to reveal its full meaning and mnemonic.')}</p></div>`;
+  TR.forEach(tr=>{
+    const grp=HEX.filter(h=>field==='upper'?h.up===tr.num:h.lo===tr.num);
+    if(!grp.length) return;
+    html+=`<div class="tri-group">
+      <div class="tgh"><span class="tgh-g">${tr.g}</span>
+        <div>
+          <div class="tgh-name">${LANG==='en'?tr.en:(LANG==='zh-CN'?toSC(tr.zh):tr.zh)}${LANG!=='en'?' · '+tr.en:''}</div>
+          <div class="tgh-sub">${field==='upper'?t('上卦','Upper'):t('下卦','Lower')} ${tr.g}${LANG==='en'?tr.en:tr.zh} — ${grp.length} ${t('卦','hexagrams')}</div>
+          <div class="tgh-attr">${enOnly(tr.el)} · ${enOnly(tr.fam)} · ${enOnly(tr.attr)}</div>
+        </div>
+      </div>
+      <div class="tgh-body"><div class="hex-grid">${grp.map(h=>{
+        const ut=trMap[h.up],lt=trMap[h.lo];
+        const cid='hg-'+field+'-'+h.kw;
+        return `<div class="hcard" id="${cid}" onclick="toggleHC('${cid}')">
+          <div class="hcard-top"><span class="hcard-g">${h.g}</span>
+            <div><div class="hcard-zh">${h.zh}</div><div class="hcard-en">${h.en}</div><div class="hcard-kw">#${h.kw}</div></div></div>
+          <div class="hcard-theme">${h.theme}</div>
+          <div class="hcard-detail">
+            <div class="hcard-meaning">${hm(h.meaning)}</div>
+            <div class="hcard-mnem">💡 ${hm(h.mnem)}</div>
+            <div class="hcard-pair"><span style="color:var(--red)">${t('上','U')} ${ut.g}${LANG==='en'?ut.en:ut.zh}</span><span style="color:var(--jade)">${t('下','L')} ${lt.g}${LANG==='en'?lt.en:lt.zh}</span></div>
+          </div></div>`;}).join('')}</div></div></div>`;
+  });
+  return html;
+}
+
+function buildHexListHTML(){
+  return '<div style="display:flex;flex-direction:column;gap:7px;">'+HEX.map(h=>{
+    const ut=trMap[h.up],lt=trMap[h.lo];
+    const cid='hl-'+h.kw;
+    return `<div class="hcard" id="${cid}" onclick="toggleHC('${cid}')" style="display:flex;gap:11px;align-items:flex-start;">
+      <span style="font-size:32px;line-height:1;flex-shrink:0">${h.g}</span>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;gap:7px;align-items:baseline;flex-wrap:wrap">
+          <span style="font-size:16px;font-weight:700;color:var(--red)">${h.zh}</span>
+          <span style="font-size:13px;color:var(--ink3)">${h.en}</span>
+          <span style="font-size:12px;color:var(--gold)">#${h.kw}</span>
+        </div>
+        <div class="hcard-theme">${h.theme}</div>
+        <div class="hcard-detail">
+          <div class="hcard-meaning">${hm(h.meaning)}</div>
+          <div class="hcard-mnem">💡 ${hm(h.mnem)}</div>
+          <div class="hcard-pair"><span style="color:var(--red)">${t('上','U')} ${ut.g}${ut.zh} ${ut.en}</span><span style="color:var(--jade)">${t('下','L')} ${lt.g}${lt.zh} ${lt.en}</span></div>
+        </div>
+      </div></div>`;}).join('')+'</div>';}
+
+function toggleHC(id){const el=document.getElementById(id);if(el)el.classList.toggle('open');}
+
+/* ════════════════════════════════════════════════════
+   FAMILY PATH
+════════════════════════════════════════════════════ */
+function openFamilyPath(stageIdx){
+  curStage=stageIdx;
+  const s=STAGES[stageIdx];
+  curFamilyStageId=s.id;
+  const fp=FAMILY_PROGRESS[s.id];
+  const passed=fp.filter(f=>f.passed).length;
+  document.getElementById('fp-title').textContent=LANG==='en'?s.en:(LANG==='zh-CN'?(s.zhSC||toSC(s.zh)):s.zh);
+  document.getElementById('fp-sub').textContent=stageDesc(s);
+  document.getElementById('fp-prog').style.width=Math.round(passed/8*100)+'%';
+  const field=s.familyField;
+  updateLangLabels();
+  document.getElementById('family-grid').innerHTML=TR.map((tr,i)=>{
+    const fam=fp[i];
+    const grp=HEX.filter(h=>field==='upper'?h.up===tr.num:h.lo===tr.num);
+    return `<div class="fcard ${fam.passed?'passed':''}" onclick="openFamilyStudy(${stageIdx},${i})">
+      <div class="fcard-top"><span class="fcard-g">${tr.g}</span>
+        <div><div class="fcard-zh">${LANG==='en'?tr.en:tr.zh}</div><div class="fcard-en">${tr.en}</div></div>
+        ${fam.passed?`<span class="tag tag-pass" style="margin-left:auto">✓</span>`:`<span class="tag tag-open" style="margin-left:auto">●</span>`}
+      </div>
+      <div class="fcard-attr">${enOnly(tr.el)} · ${enOnly(tr.attr)}</div>
+      <div class="fcard-count">${grp.length} ${t('卦','hexagrams')} · ${field==='upper'?t('上卦','upper'):t('下卦','lower')} ${tr.g}</div>
+      <div class="sc-bar-wrap" style="margin-top:7px;height:4px;background:var(--p3);border-radius:2px;overflow:hidden;">
+        <div style="height:100%;background:var(--jade);border-radius:2px;width:${fam.passed?100:0}%"></div>
+      </div>
+    </div>`;
+  }).join('');
+  sh('s-family-path');
+}
+
+function openFamilyStudy(stageIdx,famIdx){
+  curStage=stageIdx;curFamilyIdx=famIdx;
+  const s=STAGES[stageIdx];
+  const tr=TR[famIdx];
+  const field=s.familyField;
+  const grp=HEX.filter(h=>field==='upper'?h.up===tr.num:h.lo===tr.num);
+  document.getElementById('fs-back-btn').onclick=()=>openFamilyPath(stageIdx);
+  document.getElementById('fs-back-btn2').onclick=()=>openFamilyPath(stageIdx);
+  document.getElementById('fs-header').innerHTML=`
+    <div style="margin:0 14px 13px;background:var(--p2);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;gap:13px;align-items:flex-start;box-shadow:0 1px 4px var(--sh);">
+      <span style="font-size:42px;line-height:1;flex-shrink:0">${tr.g}</span>
+      <div>
+        <div style="font-size:18px;font-weight:700;color:var(--red)">${LANG==='en'?tr.en:(LANG==='zh-CN'?toSC(tr.zh):tr.zh)}${LANG!=='en'?' · '+tr.en:''} ${field==='upper'?t('上卦','Upper'):''}${field==='lower'?t('下卦','Lower'):''} ${t('家族','Family')}</div>
+        <div style="font-size:13px;color:var(--jade);margin-top:3px">${enOnly(tr.el)} · ${enOnly(tr.fam)} · ${enOnly(tr.attr)}</div>
+        ${koujueBox(tr)}
+        <div style="font-size:14px;color:var(--ink2);margin-top:5px">${t(`${grp.length} 卦，${field==='upper'?'上':'下'}卦皆為 ${tr.g}${tr.zh}。點擊各卦展開含義。`,`${grp.length} hexagrams with ${tr.en} as the ${field} trigram. Tap each card to learn its meaning.`)}</div>
+      </div>
+    </div>`;
+  updateLangLabels();
+  document.getElementById('fs-cards').innerHTML=grp.map(h=>{
+    const ut=trMap[h.up],lt=trMap[h.lo];
+    const cid='fs-'+h.kw;
+    return `<div class="hcard" id="${cid}" onclick="toggleHC('${cid}')">
+      <div class="hcard-top"><span class="hcard-g">${h.g}</span>
+        <div><div class="hcard-zh">${h.zh}</div><div class="hcard-en">${h.en}</div><div class="hcard-kw">#${h.kw}</div></div></div>
+      <div class="hcard-theme">${h.theme}</div>
+      <div class="hcard-detail">
+        <div class="hcard-meaning">${hm(h.meaning)}</div>
+        <div class="hcard-mnem">💡 ${hm(h.mnem)}</div>
+        <div class="hcard-pair"><span style="color:var(--red)">${t('上','U')} ${ut.g}${ut.zh}</span><span style="color:var(--jade)">${t('下','L')} ${lt.g}${lt.zh}</span></div>
+      </div></div>`;}).join('');
+  sh('s-family-study');
+}
+
+function goFamilyQuiz(){
+  const s=STAGES[curStage];
+  const tr=TR[curFamilyIdx];
+  const field=s.familyField;
+  const grp=HEX.filter(h=>field==='upper'?h.up===tr.num:h.lo===tr.num);
+  cpC=0;cpW=0;cpIdx=0;answered=false;
+  cpQs=buildFamilyQs(grp,tr,field);
+  document.getElementById('cp-title').textContent=`${field==='upper'?t('上','Upper'):t('下','Lower')}${t('卦家族測驗','Trigram Family Quiz')}: ${tr.g} ${LANG==='en'?tr.en:tr.zh}`;
+  document.getElementById('cp-sub').textContent=`${cpQs.length} ${t('題 · 必須全對通過','questions · 100% required to pass')}`;
+  document.getElementById('result-box').innerHTML='';
+  document.getElementById('q-box').style.display='block';
+  sh('s-checkpoint');updateLangLabels();renderQ();
+}
+
+function buildFamilyQs(grp,tr,field){
+  const qs=[];
+  grp.forEach(h=>{
+    const dec=shuf(HEX.filter(x=>x.kw!==h.kw)).slice(0,3);
+    const opts=shuf([h,...dec]);
+    qs.push({pr:h.g,big:true,isGlyph:false,q:t('這是哪一卦？','Which hexagram is this?'),opts:opts.map(o=>o.zh+' '+o.en),ans:opts.indexOf(h)});
+  });
+  grp.forEach(h=>{
+    const dec=shuf(HEX.filter(x=>x.kw!==h.kw&&(field==='upper'?x.up!==tr.num:x.lo!==tr.num))).slice(0,3);
+    const opts=shuf([h,...dec]);
+    qs.push({pr:h.zh+' '+h.en+' #'+h.kw,big:false,isGlyph:true,q:t('哪個符號是此卦？','Which glyph represents this hexagram?'),opts:opts.map(o=>o.g),ans:opts.indexOf(h)});
+  });
+  grp.forEach(h=>{
+    const dec=shuf(grp.filter(x=>x.kw!==h.kw)).slice(0,Math.min(3,grp.length-1));
+    if(dec.length<3){const extra=shuf(HEX.filter(x=>x.kw!==h.kw&&!dec.find(d=>d.kw===x.kw))).slice(0,3-dec.length);dec.push(...extra);}
+    const opts=shuf([h,...dec]);
+    qs.push({pr:h.g,big:true,isGlyph:false,q:t('此卦主題是？','What is the theme of this hexagram?'),opts:opts.map(o=>o.theme+' · '+o.zh),ans:opts.indexOf(h)});
+  });
+  return shuf(qs).slice(0,Math.min(grp.length*2,16));
+}
+
+/* ════════════════════════════════════════════════════
+   CHECKPOINT
+════════════════════════════════════════════════════ */
+function goCheckpoint(i){
+  curStage=i;cpC=0;cpW=0;cpIdx=0;answered=false;
+  cpQs=buildStageQs(i);
+  const s=STAGES[i];
+  document.getElementById('cp-title').textContent=t('測驗：','Test: ')+(LANG==='en'?s.en:s.zh);
+  document.getElementById('cp-sub').textContent=cpQs.length+t(' 題 · 全對才能通過',' questions · 100% required to pass');
+  document.getElementById('result-box').innerHTML='';
+  document.getElementById('q-box').style.display='block';
+  sh('s-checkpoint');updateLangLabels();renderQ();
+}
+
+function buildStageQs(i){
+  const qs=[];
+  if(i===0){return[
+    {pr:'⚊',big:true,isGlyph:false,q:t('這條線是陰還是陽？','Is this line yin or yang?'),opts:[t('陽爻 Yang — 實線','陽爻 Yang — solid line'),t('陰爻 Yin — 斷線','陰爻 Yin — broken line')],ans:0},
+    {pr:'⚋',big:true,isGlyph:false,q:t('這條線是陰還是陽？','Is this line yin or yang?'),opts:[t('陽爻 Yang — 實線','陽爻 Yang — solid line'),t('陰爻 Yin — 斷線','陰爻 Yin — broken line')],ans:1},
+    {pr:'⚊',big:true,isGlyph:false,q:t('陽爻代表什麼？','Yang represents:'),opts:[t('天 · 主動 · 奇數','Heaven · Active · Odd'),t('地 · 被動 · 偶數','Earth · Passive · Even')],ans:0},
+    {pr:'⚋',big:true,isGlyph:false,q:t('陰爻代表什麼？','Yin represents:'),opts:[t('天 · 主動 · 奇數','Heaven · Active · Odd'),t('地 · 被動 · 偶數','Earth · Passive · Even')],ans:1},
+    {pr:t('三爻','Three Lines'),big:false,isGlyph:false,q:t('三條爻堆疊形成什麼？','Three stacked lines form:'),opts:[t('一個卦（八卦之一）','One trigram (one of 8)'),t('一條爻','One line')],ans:0},
+    {pr:t('六十四卦','64 Hexagrams'),big:false,isGlyph:false,q:t('每個六十四卦由什麼組成？','Each hexagram is made of:'),opts:[t('上卦＋下卦','Upper + Lower trigram'),t('六條陽爻','Six yang lines')],ans:0},
+    {pr:t('讀卦方向','Reading Direction'),big:false,isGlyph:false,q:t('卦的爻從哪裡開始讀？','Lines are read from:'),opts:[t('下往上','Bottom to top'),t('上往下','Top to bottom')],ans:0},
+    {pr:'☳ 震',big:true,isGlyph:false,q:t('☳ 震（Thunder）的最下面一爻是什麼？','The bottom line of ☳ Thunder is:'),opts:[t('⚊ 陽爻（實線）','⚊ Yang (solid)'),t('⚋ 陰爻（斷線）','⚋ Yin (broken)')],ans:0},
+  ];}
+  if(i===1){
+    TR.forEach(tr=>{const d=pick(TR.filter(x=>x!==tr),3);const o=shuf([tr,...d]);qs.push({pr:tr.g,big:true,isGlyph:false,q:t('這個符號是哪個卦？','Which trigram is this?'),opts:o.map(x=>(LANG==='en'?x.en:x.zh)+' '+x.en),ans:o.indexOf(tr)});});
+    TR.forEach(tr=>{const d=pick(TR.filter(x=>x!==tr),3);const o=shuf([tr,...d]);qs.push({pr:(LANG==='en'?tr.en:tr.zh)+' ('+tr.py+')',big:false,isGlyph:true,q:t('哪個符號代表此卦？','Which glyph represents this trigram?'),opts:o.map(x=>x.g),ans:o.indexOf(tr)});});
+    return shuf(qs).slice(0,16);
+  }
+  if(i===2){
+    TR.forEach(tr=>{const d=pick(TR.filter(x=>x!==tr),3);const o=shuf([tr,...d]);qs.push({pr:tr.g+' '+(LANG==='en'?tr.en:tr.zh),big:false,isGlyph:false,q:t('象（自然象徵）是什麼？','Natural element is:'),opts:o.map(x=>enOnly(x.el)),ans:o.indexOf(tr)});});
+    TR.forEach(tr=>{const d=pick(TR.filter(x=>x!==tr),3);const o=shuf([tr,...d]);qs.push({pr:tr.g+' '+(LANG==='en'?tr.en:tr.zh),big:false,isGlyph:false,q:t('家庭角色是什麼？','Family role is:'),opts:o.map(x=>enOnly(x.fam)),ans:o.indexOf(tr)});});
+    TR.forEach(tr=>{const d=pick(TR.filter(x=>x!==tr),3);const o=shuf([tr,...d]);qs.push({pr:tr.g+' '+(LANG==='en'?tr.en:tr.zh),big:false,isGlyph:false,q:t('方位是哪裡？','Cardinal direction is:'),opts:o.map(x=>enOnly(x.dir)),ans:o.indexOf(tr)});});
+    return shuf(qs).slice(0,16);
+  }
+  if(i===3){
+    pick(HEX,8).forEach(h=>{
+      const ut=trMap[h.up],lt=trMap[h.lo];
+      const uD=pick(TR.filter(x=>x!==ut),3),lD=pick(TR.filter(x=>x!==lt),3);
+      const uO=shuf([ut,...uD]),lO=shuf([lt,...lD]);
+      qs.push({pr:h.g+' '+h.zh,big:true,isGlyph:false,q:t('上卦是什麼？','Upper trigram is:'),opts:uO.map(o=>o.g+' '+(LANG==='en'?o.en:o.zh)),ans:uO.indexOf(ut)});
+      qs.push({pr:h.g+' '+h.zh,big:true,isGlyph:false,q:t('下卦是什麼？','Lower trigram is:'),opts:lO.map(o=>o.g+' '+(LANG==='en'?o.en:o.zh)),ans:lO.indexOf(lt)});
+    });
+    return shuf(qs).slice(0,12);
+  }
+  if(i===4){
+    TR.forEach(tr=>{
+      const w=wxMap[tr.wx];
+      const decWx=shuf(WUXING.filter(x=>x.id!==tr.wx)).slice(0,3);
+      const opts=shuf([w,...decWx]);
+      qs.push({pr:tr.g+' '+(LANG==='en'?tr.en:tr.zh),big:false,isGlyph:false,q:t('此卦屬哪個五行？','Which of the Five Elements?'),opts:opts.map(x=>x.emoji+' '+(LANG==='en'?x.en:x.zh)+' '+x.en),ans:opts.indexOf(w)});
+    });
+    WUXING.forEach(w=>{
+      const correct=TR.filter(x=>x.wx===w.id);
+      if(correct.length===1){
+        const decoys=pick(TR.filter(x=>x.wx!==w.id),3);
+        const opts=shuf([correct[0],...decoys]);
+        qs.push({pr:w.emoji+' '+(LANG==='en'?w.en:w.zh)+' '+w.en,big:false,isGlyph:false,q:t('哪個卦屬於此五行？','Which trigram belongs to this element?'),opts:opts.map(x=>x.g+' '+(LANG==='en'?x.en:x.zh)),ans:opts.indexOf(correct[0])});
+      }
+    });
+    WUXING.forEach(w=>{
+      const decoys=shuf(WUXING.filter(x=>x.id!==w.id)).slice(0,3);
+      const opts=shuf([w,...decoys]);
+      qs.push({pr:enOnly(w.season),big:false,isGlyph:false,q:t('季節對應哪個五行？','Which element matches this season?'),opts:opts.map(x=>x.emoji+' '+(LANG==='en'?x.en:x.zh)+' '+x.en),ans:opts.indexOf(w)});
+    });
+    return shuf(qs).slice(0,16);
+  }
+  if(i===7){
+    pick(HEX,10).forEach(h=>{
+      const ut=trMap[h.up],lt=trMap[h.lo];
+      const uD=pick(TR.filter(x=>x!==ut),3),lD=pick(TR.filter(x=>x!==lt),3);
+      const uO=shuf([ut,...uD]),lO=shuf([lt,...lD]);
+      qs.push({pr:h.g,big:true,isGlyph:false,q:t('上卦是什麼？','Upper trigram is:'),opts:uO.map(o=>o.g+' '+(LANG==='en'?o.en:o.zh)+' '+o.en),ans:uO.indexOf(ut)});
+      qs.push({pr:h.g,big:true,isGlyph:false,q:t('下卦是什麼？','Lower trigram is:'),opts:lO.map(o=>o.g+' '+(LANG==='en'?o.en:o.zh)+' '+o.en),ans:lO.indexOf(lt)});
+    });
+    return shuf(qs).slice(0,16);
+  }
+  return qs;
+}
+
+/* ════════════════════════════════════════════════════
+   RENDER QUESTION
+════════════════════════════════════════════════════ */
+function renderQ(){
+  updateBoard();
+  if(cpIdx>=cpQs.length){showResult(false);return;}
+  const q=cpQs[cpIdx];
+  answered=false;
+  const optsClass=q.isGlyph?'q-opts glyph-opts':'q-opts';
+  document.getElementById('q-box').innerHTML=`
+    <div class="q-prompt" style="font-size:${q.big?'54px':'17px'};color:var(--ink2)">${q.pr}</div>
+    <div class="q-qt">${q.q}</div>
+    <div class="${optsClass}" id="q-opts">${q.opts.map((o,i)=>`<button class="q-opt" onclick="selOpt(${i})">${o}</button>`).join('')}</div>
+    <div class="q-fb" id="q-fb"></div>
+    <div style="text-align:center"><button class="btn-p" id="nxt" style="display:none" onclick="nextQ()">${t('下一題 →','Next →')}</button></div>
+    <div class="pnote">${t('第','Question ')} ${cpIdx+1} / ${cpQs.length} ${t('題','')}</div>`;
+}
+
+function selOpt(i){
+  if(answered)return;answered=true;
+  const q=cpQs[cpIdx];
+  const btns=document.querySelectorAll('#q-opts .q-opt');
+  btns.forEach(b=>b.onclick=null);
+  if(i===q.ans){btns[i].classList.add('correct');cpC++;document.getElementById('q-fb').innerHTML=`<span style="color:var(--jade)">✓ ${t('正確！','Correct!')}</span>`;}
+  else{btns[i].classList.add('wrong');btns[q.ans].classList.add('reveal');cpW++;document.getElementById('q-fb').innerHTML=`<span style="color:var(--red)">✗ ${t('錯誤 · 正確答案已標出','Incorrect — correct answer shown')}</span>`;}
+  document.getElementById('nxt').style.display='inline-block';
+  updateBoard();
+}
+
+function nextQ(){cpIdx++;if(cpIdx>=cpQs.length){showResult(false);return;}renderQ();}
+
+function updateBoard(){
+  document.getElementById('sc-c').textContent=cpC;
+  document.getElementById('sc-w').textContent=cpW;
+  document.getElementById('sc-r').textContent=Math.max(0,cpQs.length-cpIdx);
+}
+
+function showResult(isFamilyQuiz){
+  document.getElementById('q-box').style.display='none';
+  const passed=cpW===0;
+  const s=STAGES[curStage];
+  if(passed){
+    if(isFamilyQuiz||s.isFamilyStage){
+      FAMILY_PROGRESS[curFamilyStageId][curFamilyIdx].passed=true;
+      const fp=FAMILY_PROGRESS[curFamilyStageId];
+      const allFamPassed=fp.every(f=>f.passed);
+      if(allFamPassed)s.passed=true;
+      const nextFamIdx=curFamilyIdx+1<8?curFamilyIdx+1:-1;
+      document.getElementById('result-box').innerHTML=`<div class="pass-box">
+        <div class="result-icon">✓</div>
+        <div class="result-title">${t('通過！','Passed!')}</div>
+        <div class="result-sub">${t('全部正確！','All correct!')} ${cpQs.length}/${cpQs.length}<br>
+          ${allFamPassed?t('🎉 全部八個家族完成！','🎉 All 8 families complete!'):fp.filter(f=>f.passed).length+'/8 '+t('族群已通過','families passed.')}
+        </div>
+        <div class="btn-row" style="justify-content:center">
+          ${nextFamIdx>=0?`<button class="btn-p" onclick="openFamilyStudy(${curStage},${nextFamIdx})">${t('下一族群 →','Next Family →')}</button>`:''}
+          <button class="btn-s" onclick="openFamilyPath(${curStage})">${t('返回族群列表','Back to Families')}</button>
+          <button class="btn-s" onclick="goPath()">${t('返回路徑','Back to Path')}</button>
+        </div></div>`;
+    } else {
+      s.passed=true;
+      const nextIdx=curStage+1<STAGES.length?curStage+1:-1;
+      document.getElementById('result-box').innerHTML=`<div class="pass-box">
+        <div class="result-icon">✓</div>
+        <div class="result-title">${t('通過！模組完成！','Passed — module complete!')}</div>
+        <div class="result-sub">${t('全部','All ')} ${cpQs.length}/${cpQs.length} ${t('正確！','correct!')}<br>${nextIdx>=0?t('繼續下一模組 → ','Continue to next module: ')+STAGES[nextIdx].zh:t('所有核心模組完成！','All core modules complete!')}</div>
+        <div class="btn-row" style="justify-content:center">
+          ${nextIdx>=0?`<button class="btn-p" onclick="openStage(${nextIdx})">${t('下一模組 →','Next Module →')}</button>`:''}
+          <button class="btn-s" onclick="openStage(${curStage})">${t('再次複習','Review Again')}</button>
+          <button class="btn-s" onclick="goPath()">${t('返回路徑','Back to Path')}</button>
+        </div></div>`;
+    }
+  } else {
+    const retryFn=isFamilyQuiz||s.isFamilyStage?`goFamilyQuiz()`:`goCheckpoint(${curStage})`;
+    const reviewFn=isFamilyQuiz||s.isFamilyStage?`openFamilyStudy(${curStage},${curFamilyIdx})`:`openStage(${curStage})`;
+    document.getElementById('result-box').innerHTML=`<div class="fail-box">
+      <div class="result-icon">✗</div>
+      <div class="result-title">${t('尚未通過','Not Passed Yet')}</div>
+      <div class="result-sub">${t('正確','Correct ')} ${cpC}/${cpQs.length} · ${t('錯誤','Errors: ')} ${cpW}<br>${t('需要全對才能通過。複習後再試。','100% required — review the material and try again.')}</div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn-p" onclick="${retryFn}">${t('重新測驗','Retry')}</button>
+        <button class="btn-s" onclick="${reviewFn}">${t('複習材料','Review')}</button>
+        <button class="btn-s" onclick="goPath()">${t('返回路徑','Back to Path')}</button>
+      </div></div>`;
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   FINAL EXAM
+════════════════════════════════════════════════════ */
+function updateLangLabels(){
+  const map={
+    'back-lbl':t('返回路徑','Back'),
+    'fp-back-btn':'← '+t('返回路徑','Back'),
+    'cp-back-btn':'← '+t('返回路徑','Back'),
+    'final-back-btn':'← '+t('返回路徑','Back'),
+    'fs-back-btn':'← '+t('返回','Back'),
+    'fs-back-btn2':'← '+t('返回族群','Back to Families'),
+    'fs-start-btn':t('開始測驗 →','Start Test →'),
+    'sc-c-lbl':t('正確','Correct'),
+    'sc-w-lbl':t('錯誤','Wrong'),
+    'sc-r-lbl':t('剩餘','Left'),
+    'fsc-c-lbl':t('正確','Correct'),
+    'fsc-w-lbl':t('錯誤','Wrong'),
+    'fsc-r-lbl':t('剩餘','Left'),
+    'final-cp-title':t('終極測驗','Final Test'),
+    'cp-pass-note':t('全對才能解鎖 · 100% to pass','100% to pass'),
+    'final-pass-note':t('必須全對通過 · 100% required','100% required'),
+  };
+  Object.entries(map).forEach(([id,txt])=>{const el=document.getElementById(id);if(el)el.textContent=txt;});
+}
+
+function renderFinalIntro(){
+  const el=document.getElementById('final-intro-box');
+  if(!el) return;
+  el.innerHTML=`
+    <h3>✦ ${t('終極測驗','Final Test')} ✦</h3>
+    <p>${t('四十題，涵蓋全部八個模組。最終考驗你的掌握程度。','40 questions across all eight modules — the ultimate measure of your mastery.')}<br><br>${t('陰陽 · 八卦 · 五行 · 六十四卦 · 必須全對通過','Yin Yang · Trigrams · Five Elements · 64 Hexagrams · 100% required')}</p>
+    <div style="margin-top:14px;"><button class="btn-gold" onclick="startFinal()">${t('踏上終極之路 · Begin Final Test →','Begin Final Test →')}</button></div>`;
+}
+
+function goFinal(){sh('s-final');renderFinalIntro();updateLangLabels();}
+
+function startFinal(){
+  fC=0;fW=0;fIdx=0;fAnswered=false;
+  fQs=buildFinalQs();
+  document.getElementById('final-cp-header').style.display='block';
+  document.getElementById('final-cp-sub').textContent=fQs.length+t(' 題 · 涵蓋所有模組',' questions · all modules');
+  document.getElementById('fresult-box').innerHTML='';
+  document.getElementById('fq-box').style.display='block';
+  renderFQ();
+}
+
+function buildFinalQs(){
+  const qs=[];
+  qs.push({pr:'⚊',big:true,isGlyph:false,q:t('這條線是：','This line is:'),opts:[t('陽爻 Yang（實線）','陽爻 Yang (solid)'),t('陰爻 Yin（斷線）','陰爻 Yin (broken)')],ans:0});
+  qs.push({pr:'⚋',big:true,isGlyph:false,q:t('這條線是：','This line is:'),opts:[t('陽爻 Yang（實線）','陽爻 Yang (solid)'),t('陰爻 Yin（斷線）','陰爻 Yin (broken)')],ans:1});
+  qs.push({pr:t('六十四卦','64 Hexagrams'),big:false,isGlyph:false,q:t('每個六十四卦由什麼組成？','Each hexagram is made of:'),opts:[t('上卦＋下卦','Upper + Lower trigram'),t('六條陽爻','Six yang lines')],ans:0});
+  pick(TR,6).forEach(tr=>{const d=pick(TR.filter(x=>x!==tr),3);const o=shuf([tr,...d]);qs.push({pr:tr.g,big:true,isGlyph:false,q:t('這是哪個卦？','Which trigram?'),opts:o.map(x=>(LANG==='en'?x.en:x.zh)+' '+x.en),ans:o.indexOf(tr)});});
+  pick(TR,3).forEach(tr=>{const d=pick(TR.filter(x=>x!==tr),3);const o=shuf([tr,...d]);qs.push({pr:tr.g+' '+(LANG==='en'?tr.en:tr.zh),big:false,isGlyph:false,q:t('象（自然象徵）是：','Natural element is:'),opts:o.map(x=>enOnly(x.el)),ans:o.indexOf(tr)});});
+  pick(TR,3).forEach(tr=>{const d=pick(TR.filter(x=>x!==tr),3);const o=shuf([tr,...d]);qs.push({pr:tr.g+' '+(LANG==='en'?tr.en:tr.zh),big:false,isGlyph:false,q:t('家庭角色是：','Family role is:'),opts:o.map(x=>enOnly(x.fam)),ans:o.indexOf(tr)});});
+  pick(TR,4).forEach(tr=>{const w=wxMap[tr.wx];const dWx=shuf(WUXING.filter(x=>x.id!==tr.wx)).slice(0,3);const opts=shuf([w,...dWx]);qs.push({pr:tr.g+' '+(LANG==='en'?tr.en:tr.zh),big:false,isGlyph:false,q:t('五行是：','Five Element is:'),opts:opts.map(x=>x.emoji+' '+(LANG==='en'?x.en:x.zh)+' '+x.en),ans:opts.indexOf(w)});});
+  pick(WUXING,2).forEach(w=>{const d=shuf(WUXING.filter(x=>x.id!==w.id)).slice(0,3);const opts=shuf([w,...d]);qs.push({pr:enOnly(w.season),big:false,isGlyph:false,q:t('季節 → 五行：','Season → Element:'),opts:opts.map(x=>x.emoji+' '+(LANG==='en'?x.en:x.zh)),ans:opts.indexOf(w)});});
+  pick(HEX,8).forEach(h=>{
+    const ut=trMap[h.up],lt=trMap[h.lo];
+    const uD=pick(TR.filter(x=>x!==ut),3),lD=pick(TR.filter(x=>x!==lt),3);
+    const uO=shuf([ut,...uD]),lO=shuf([lt,...lD]);
+    qs.push({pr:h.g,big:true,isGlyph:false,q:t('上卦是：','Upper trigram is:'),opts:uO.map(o=>o.g+' '+(LANG==='en'?o.en:o.zh)),ans:uO.indexOf(ut)});
+    qs.push({pr:h.g,big:true,isGlyph:false,q:t('下卦是：','Lower trigram is:'),opts:lO.map(o=>o.g+' '+(LANG==='en'?o.en:o.zh)),ans:lO.indexOf(lt)});
+  });
+  pick(HEX,4).forEach(h=>{
+    const d=pick(HEX.filter(x=>x.kw!==h.kw),3);const opts=shuf([h,...d]);
+    qs.push({pr:h.zh+' '+h.en,big:false,isGlyph:true,q:t('哪個符號是此卦？','Which glyph is this hexagram?'),opts:opts.map(o=>o.g),ans:opts.indexOf(h)});
+  });
+  return shuf(qs).slice(0,40);
+}
+
+function renderFQ(){
+  updateFBoard();
+  if(fIdx>=fQs.length){showFResult();return;}
+  const q=fQs[fIdx];
+  fAnswered=false;
+  const optsClass=q.isGlyph?'q-opts glyph-opts':'q-opts';
+  document.getElementById('fq-box').innerHTML=`
+    <div class="q-prompt" style="font-size:${q.big?'54px':'17px'};color:var(--ink2)">${q.pr}</div>
+    <div class="q-qt">${q.q}</div>
+    <div class="${optsClass}" id="fq-opts">${q.opts.map((o,i)=>`<button class="q-opt" onclick="fSelOpt(${i})">${o}</button>`).join('')}</div>
+    <div class="q-fb" id="fq-fb"></div>
+    <div style="text-align:center"><button class="btn-p" id="fnxt" style="display:none" onclick="nextFQ()">${t('下一題 →','Next →')}</button></div>
+    <div class="pnote">${t('第','Question ')} ${fIdx+1} / ${fQs.length} ${t('題','')}</div>`;
+}
+
+function fSelOpt(i){
+  if(fAnswered)return;fAnswered=true;
+  const q=fQs[fIdx];
+  const btns=document.querySelectorAll('#fq-opts .q-opt');
+  btns.forEach(b=>b.onclick=null);
+  if(i===q.ans){btns[i].classList.add('correct');fC++;document.getElementById('fq-fb').innerHTML=`<span style="color:var(--jade)">✓ ${t('正確！','Correct!')}</span>`;}
+  else{btns[i].classList.add('wrong');btns[q.ans].classList.add('reveal');fW++;document.getElementById('fq-fb').innerHTML=`<span style="color:var(--red)">✗ ${t('錯誤 · 正確答案已標出','Incorrect — correct answer shown')}</span>`;}
+  document.getElementById('fnxt').style.display='inline-block';
+  updateFBoard();
+}
+
+function nextFQ(){fIdx++;if(fIdx>=fQs.length){showFResult();return;}renderFQ();}
+
+function updateFBoard(){
+  document.getElementById('fsc-c').textContent=fC;
+  document.getElementById('fsc-w').textContent=fW;
+  document.getElementById('fsc-r').textContent=Math.max(0,fQs.length-fIdx);
+}
+
+function showFResult(){
+  document.getElementById('fq-box').style.display='none';
+  const passed=fW===0;
+  if(passed){
+    FINAL_STAGE.passed=true;
+    document.getElementById('fresult-box').innerHTML=`<div class="pass-box">
+      <div class="result-icon">🏆</div>
+      <div class="result-title">${t('恭喜！大功告成！','Congratulations — Mastery Achieved!')}</div>
+      <div class="result-sub" style="font-size:14px">${t('全部','All ')} ${fQs.length}/${fQs.length} ${t('正確！','correct!')}<br><br>
+        ${t('你已掌握易經基礎。陰陽、八卦、五行、六十四卦 — 全在心中。','You have mastered the foundations of the I Ching. Yin and yang, the eight trigrams, the Five Elements, all 64 hexagrams — they live in you now.')}<br><br>
+        易經掌握完成 ✦
+      </div>
+      <div class="btn-row" style="justify-content:center;margin-top:14px">
+        <button class="btn-s" onclick="goPath()">${t('返回路徑','Back to Path')}</button>
+      </div></div>`;
+  } else {
+    document.getElementById('fresult-box').innerHTML=`<div class="fail-box">
+      <div class="result-icon">✗</div>
+      <div class="result-title">${t('尚未通過','Not Passed Yet')}</div>
+      <div class="result-sub">${t('正確','Correct ')} ${fC}/${fQs.length} · ${t('錯誤','Errors: ')} ${fW}<br>${t('需要全對才能通過。回到各模組複習後再試。','100% required — review the relevant modules and try again. You\'re closer than you think.')}</div>
+      <div class="btn-row" style="justify-content:center;margin-top:12px">
+        <button class="btn-p" onclick="startFinal()">${t('重新測驗','Retry')}</button>
+        <button class="btn-s" onclick="goPath()">${t('返回路徑','Back to Path')}</button>
+      </div></div>`;
+  }
+}
+
+/* ════════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════════ */
+document.body.dataset.lang=LANG;
+renderPath();
+</script>
+</body>
+</html>
